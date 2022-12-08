@@ -1,7 +1,5 @@
 package com.backend.backend.models;
 
-import javax.persistence.Column;
-
 public class Breeds {
     int ID;
 
