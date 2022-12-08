@@ -5,9 +5,11 @@ public class Pet {
 
     String name;
 
-    String breed;
+    //it is a String in Breeds Table
+    int breed;
 
-    String owner;
+    // it's a String in Users Table
+    int owner;
 
     int age;
 
@@ -27,19 +29,19 @@ public class Pet {
         this.name = name;
     }
 
-    public String getBreed() {
+    public int getBreed() {
         return breed;
     }
 
-    public void setBreed(String breed) {
+    public void setBreed(int breed) {
         this.breed = breed;
     }
 
-    public String getOwner() {
+    public int getOwner() {
         return owner;
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(int owner) {
         this.owner = owner;
     }
 
