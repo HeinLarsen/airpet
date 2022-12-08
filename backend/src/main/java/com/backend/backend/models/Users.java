@@ -43,6 +43,18 @@ public class Users {
 
     private int zip;
 
+
+    public Users(String email, String firstName, String lastName, String password, String street, int streetNumber, String city, int zip) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.city = city;
+        this.zip = zip;
+    }
+
     public long getId() {
         return id;
     }
@@ -115,9 +127,18 @@ public class Users {
         this.zip = zip;
     }
 
-    public Users() {
-
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", street='" + street + '\'' +
+                ", streetNumber=" + streetNumber +
+                ", city='" + city + '\'' +
+                ", zip=" + zip +
+                '}';
     }
-
-
 }

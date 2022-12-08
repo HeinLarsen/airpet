@@ -2,12 +2,12 @@ package com.backend.backend.controllers;
 
 import com.backend.backend.models.Users;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
 
-@Controller
+@CrossOrigin(origins = "http://localhost:8081")
+@RestController
 @RequestMapping(path="/demo")
 public class MainController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
@@ -30,21 +30,14 @@ public class MainController {
 
 
     @PostMapping(path = "/add")
-    public @ResponseBody String addNewUser (@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email) {
-        Users n = new Users();
-        n.setFirstname(firstName);
-        n.setLastName(lastName);
-        n.setEmail(email);
-
-
-        String query = "INSERT INTO users (first_name, last_name, email) VALUES ('" + firstName + "', '" + lastName + "', '" + email + "')";
+    public @ResponseBody String addNewUser (@RequestBody Users u) {
+        String query = "INSERT INTO users (first_name, last_name, email) VALUES ('" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getEmail() + "')";
         try {
             Statement statement = this.connection.createStatement();
             statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return "saved";
     }
 }
