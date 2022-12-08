@@ -43,7 +43,10 @@ public class Users {
 
     private int zip;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> cca4a4f03b03609c1b7c16dcae410c604ca40ecf
     public Users(String email, String firstName, String lastName, String password, String street, int streetNumber, String city, int zip) {
         this.email = email;
         this.firstName = firstName;
@@ -55,6 +58,10 @@ public class Users {
         this.zip = zip;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> cca4a4f03b03609c1b7c16dcae410c604ca40ecf
     public long getId() {
         return id;
     }
@@ -127,6 +134,7 @@ public class Users {
         this.zip = zip;
     }
 
+<<<<<<< HEAD
     @Override
     public String toString() {
         return "Users{" +
@@ -141,4 +149,9 @@ public class Users {
                 ", zip=" + zip +
                 '}';
     }
+=======
+
+
+
+>>>>>>> cca4a4f03b03609c1b7c16dcae410c604ca40ecf
 }
