@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
@@ -8,15 +7,42 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: () => import(/* webpackChunkName: "signup" */ '../views/Signup.vue')
+  },
+  {
+    path: '/addPet',
+    name: 'addPet',
+    component: () => import(/* webpackChunkName: "addPet" */ '../views/AddPet.vue')
+  },
+  {
+    path: '/pet/:id',
+    name: 'pet',
+    component: () => import(/* webpackChunkName: "pet" */ '../views/Pet.vue')
+  },
+  {
+    path: '/addBooking',
+    name: 'addBooking',
+    component: () => import(/* webpackChunkName: "addBooking" */ '../views/AddBooking.vue')
+  },
+  {
+    path: '/booking/:id',
+    name: 'booking',
+    component: () => import(/* webpackChunkName: "booking" */ '../views/Booking.vue')
   }
 ]
 
