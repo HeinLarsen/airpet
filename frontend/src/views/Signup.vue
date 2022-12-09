@@ -75,9 +75,9 @@ export default {
       lastName: '',
       password: '',
       street: '',
-      streetNumber: '',
+      streetNumber: 0,
       city: '',
-      zip: '',  
+      zip: 0,  
     },
     emailRules: [
       v => !!v || 'E-mail is required',

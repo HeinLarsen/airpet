@@ -20,7 +20,7 @@ public class Users {
                     @Parameter(name = "increment_size", value = "1")
             }
     )
-    private Integer id;
+    private int id;
 
 
     private String email;
@@ -56,7 +56,7 @@ public class Users {
     }
 
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

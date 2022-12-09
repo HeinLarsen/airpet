@@ -5,18 +5,21 @@ import com.backend.backend.models.Breeds;
 import com.backend.backend.models.Pet;
 import com.backend.backend.models.Users;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-@CrossOrigin(origins = "http://locahost:8081")
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(path="/demo")
 public class MainController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
-    private String password = "Admin1234";
+    private String password = "password";
     private Connection connection;
     @Autowired
 
@@ -31,13 +34,46 @@ public class MainController {
         }
     }
 
+    @GetMapping(path = "/getUser/{ID}")
+    public ResponseEntity<Users> getUser(@PathVariable("ID") int ID){
+        String query = "SELECT * FROM users WHERE ID =" +ID;
+        Users u;
+
+        try {
+            Statement statement = this.connection.createStatement();
+            statement.execute(query);
+            ResultSet resultSet = statement.getResultSet();
+            if (!resultSet.isBeforeFirst() ) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+            } else {
+                while(resultSet.next()){
+                    ID = resultSet.getInt("ID");
+                    String email = resultSet.getString("email");
+                    String firstName = resultSet.getString("first_name");
+                    String lastName = resultSet.getString("last_name");
+                    String password = resultSet.getString("password");
+                    String street = resultSet.getString("street");
+                    int streetNumber = resultSet.getInt("street_number");
+                    String city = resultSet.getString("city");
+                    int zip = resultSet.getInt("zip");
+                    u = new Users(email, firstName, lastName, password, street, streetNumber, city, zip);
+                    u.setId(ID);
+                    return new ResponseEntity<>(u, HttpStatus.OK);
+                }
+            }
 
 
-    @PostMapping(path = "/addUser")
-    public @ResponseBody String addNewUser ( Users u) {
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
-
+    @PostMapping("/addUser")
+    public @ResponseBody String addNewUser (@RequestBody Users u) {
+        System.out.println(u);
         String query = "INSERT INTO users (first_name, last_name, email, password, street, street_number, city, zip) VALUES ('" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getEmail() + "', '" + u.getPassword() + "', '" + u.getStreet() + "', " + u.getStreetNumber() + ", '" + u.getCity() + "', " + u.getZip() + ")";
         try {
             Statement statement = this.connection.createStatement();
