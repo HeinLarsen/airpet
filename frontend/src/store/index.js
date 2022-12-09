@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import http from '@/plugins/http'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -12,13 +12,21 @@ export default new Vuex.Store({
   mutations: {
   },
   actions: {
-    async addUser({ commit }) {
-      var data = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'dwadwa@dldl.dk'
+    async addUser({ commit }, data) {
+      console.log(data);
+      var options = {
+        method: 'POST',
+        url: 'http://localhost:8080/demo/addUser',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: data
       }
-      return http.post("/add", data)
+      try {
+        await axios(options)
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   modules: {
