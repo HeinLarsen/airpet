@@ -12,13 +12,8 @@ export default new Vuex.Store({
   mutations: {
   },
   actions: {
-    async addUser({ commit }) {
-      var data = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'dwadwa@dldl.dk'
-      }
-      return http.post("/add", data)
+    async addUser({ commit }, data) {
+      return http.post("/addUser", data)
     },
   },
   modules: {
