@@ -13,11 +13,14 @@ public class Pet {
 
     int age;
 
-    public Pet(String name, int breed, int owner, int age) {
+    String description;
+
+    public Pet(String name, int breed, int owner, int age, String description) {
         this.name = name;
         this.breed = breed;
         this.owner = owner;
         this.age = age;
+        this.description = description;
     }
 
     public int getID() {
@@ -58,6 +61,14 @@ public class Pet {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String setDescription() {
+        return description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
 

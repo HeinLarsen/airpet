@@ -32,7 +32,7 @@
             </v-col>
             <v-col sm=6 xs=12>
               <v-text-field
-                v-model="user.streetName"
+                v-model="user.street"
                 label="Vejnavn"
               />
             </v-col>
@@ -50,7 +50,7 @@
             </v-col>
             <v-col sm=6 xs=12>
               <v-text-field
-                v-model="user.zipCode"
+                v-model="user.zip"
                 label="Post kode"
               />
             </v-col>
@@ -71,13 +71,13 @@ export default {
   data: () => ({
     user: {
       email: '',
-      password: '',
       firstName: '',
       lastName: '',
-      streetName: '',
-      streetNumber: '',
+      password: '',
+      street: '',
+      streetNumber: 0,
       city: '',
-      zipCode: '',  
+      zip: 0,  
     },
     emailRules: [
       v => !!v || 'E-mail is required',
@@ -86,12 +86,11 @@ export default {
   }),
   methods: {
     signup() {
-        this.$store.dispatch('addUser')
+        this.$store.dispatch('addUser', this.user)
       },
     },
 }
 </script>
 
 <style>
-
 </style>

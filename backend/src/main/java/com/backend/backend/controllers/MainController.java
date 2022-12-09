@@ -1,26 +1,24 @@
 package com.backend.backend.controllers;
 
-import com.backend.backend.models.Bookings;
-import com.backend.backend.models.Breeds;
-import com.backend.backend.models.Pet;
-import com.backend.backend.models.Users;
+import com.backend.backend.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.yaml.snakeyaml.events.Event;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
-@CrossOrigin(origins = "http://locahost:8081")
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(path="/demo")
 public class MainController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
-    private String password = "Admin1234";
+    private String password = "password";
     private Connection connection;
     @Autowired
 
@@ -59,7 +57,7 @@ public class MainController {
     public @ResponseBody String addNewPet(@RequestBody Pet p){
 
 
-        String query = "INSERT INTO pets (name, breed, owner, age) VALUES ('" + p.getName() + "', " + p.getBreed() + ", " + p.getOwner() + ", " + p.getAge() + ")";
+        String query = "INSERT INTO pets (name, breed, owner, age, description) VALUES ('" + p.getName() + "', " + p.getBreed() + ", " + p.getOwner() + ", " + p.getAge() + ", '" + p.getDescription() + "')";
         try{
             Statement statement = this.connection.createStatement();
             statement.executeUpdate(query);
@@ -174,8 +172,9 @@ public class MainController {
                 int breed = resultSet.getInt("breed");
                 int owner = resultSet.getInt("owner");
                 int age= resultSet.getInt("age");
+                String description = resultSet.getString("description");
 
-                Pet p = new Pet(name, breed, owner, age );
+                Pet p = new Pet(name, breed, owner, age, description);
                 p.setID(ID);
                 pets.add(p);
             }
@@ -294,10 +293,65 @@ public class MainController {
                     int breed = resultSet.getInt("breed");
                     int owner = resultSet.getInt("owner");
                     int age = resultSet.getInt("age");
-                    p = new Pet(name, breed, owner, age);
+                    String description = resultSet.getString("description");
+                    p = new Pet(name, breed, owner, age, description);
                     p.setID(ID);
                     return new ResponseEntity<>(p, HttpStatus.OK);
                 }
+            }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @PostMapping(path = "/addReview")
+    public String addReview(@RequestBody Review review){
+        System.out.println(review.getDate());
+        String query = "insert into reviews (reviewer, pet, description, rating, date) values (" + review.getReviewer() + ", " + review.getPet() + ", '" + review.getDescription() + "'," + review.getRating() + ", '" + review.getDate() + "')";
+
+        try {
+            Statement statement = this.connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return "adding review";
+    }
+
+    @GetMapping(path = "/getReviews/{id}")
+    public ResponseEntity<List<Review>> getReviews(@PathVariable("id") int id) {
+        String query = "select reviews.*, concat(users.first_name, ' ', users.last_name) as fullName " +
+                "from reviews " +
+                "inner join users on reviews.reviewer = users.ID " +
+                "where reviews.pet =" + id;
+        List<Review> reviews = new ArrayList<Review>();
+
+        try {
+            Statement statement = this.connection.createStatement();
+            statement.execute(query);
+            ResultSet resultSet = statement.getResultSet();
+            if (!resultSet.isBeforeFirst() ) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No valid ID");
+            } else {
+                while(resultSet.next()){
+                    id = resultSet.getInt("ID");
+                    int reviewer = resultSet.getInt("reviewer");
+                    int pet = resultSet.getInt("pet");
+                    String description = resultSet.getString("description");
+                    float rating = resultSet.getFloat("rating");
+                    String date = resultSet.getString("date");
+                    String fullName = resultSet.getString("fullName");
+                    Review r = new Review(reviewer, pet, description, rating, date);
+                    r.setID(id);
+                    r.setFullName(fullName);
+                    reviews.add(r);
+                }
+                return new ResponseEntity<>(reviews, HttpStatus.OK);
+
             }
 
 

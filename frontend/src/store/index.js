@@ -6,10 +6,31 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    pet: {},
+    pets: [],
+    reviews: []
   },
   getters: {
+    pet(state) {
+      return state.pet
+    },
+    pets(state) {
+      return state.pets
+    },
+    reviews(state) {
+      return state.reviews
+    }
   },
   mutations: {
+    setPet(state, pet) {
+      state.pet = pet
+    },
+    setPets(state, pets) {
+      state.pets = pets
+    },
+    setReviews(state, reviews) {
+      state.reviews = reviews
+    }
   },
   actions: {
     async addUser({ commit }, data) {
@@ -18,7 +39,8 @@ export default new Vuex.Store({
         method: 'POST',
         url: 'http://localhost:8080/demo/addUser',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Request-Headers': 'Content-Type, Authorization'
         },
         data: data
       }
@@ -28,6 +50,58 @@ export default new Vuex.Store({
         console.log(error);
       }
     },
+    async getPets(context) {
+      var options = {
+        method: 'GET',
+        url: 'http://localhost:8080/demo/listPets',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      const pets = await axios(options)
+      context.commit('setPets', pets.data)
+
+    },
+    async getPet(context, id) {
+        var options = {
+          method: 'GET',
+          url: 'http://localhost:8080/demo/getPet/' + id,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+        const pet = await axios(options)
+        console.log(pet);
+        context.commit('setPet', pet.data)
+    },
+    async getReviews(context, id) {
+      var options = {
+        method: 'GET',
+        url: 'http://localhost:8080/demo/getReviews/' + id,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      const reviews = await axios(options)
+      context.commit('setReviews', reviews.data)
+    },
+    async createReview(context, data) {
+      console.log(data);
+      var options = {
+        method: 'POST',
+        url: 'http://localhost:8080/demo/addReview',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: data
+      }
+      try {
+        await axios(options)
+        context.dispatch('getReviews', data.pet)
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
   modules: {
   }

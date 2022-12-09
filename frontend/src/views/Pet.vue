@@ -4,16 +4,10 @@
       <v-col cols="8">
         <v-row>
           <v-col cols="12">
-            <h1>pet name</h1>
+            <h1>{{ pet.name }}</h1>
           </v-col>
           <v-col cols="12" md="6">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-            provident temporibus in excepturi quae sit iure assumenda, vitae
-            beatae nemo voluptatum! Quasi minus architecto, saepe harum laborum
-            ipsam quibusdam illum. Lorem, ipsum dolor sit amet consectetur
-            adipisicing elit. Ad dolor modi sequi beatae. Facilis quibusdam
-            veniam excepturi perspiciatis dicta natus quis, corporis quidem qui
-            debitis inventore! Sed eum doloremque delectus.
+            {{ pet.description }}
           </v-col>
           <v-col cols="12" md="6">
             <v-img
@@ -28,24 +22,53 @@
               <v-col cols="12">
                 <v-card>
                   <v-card-title>
-                    <div class="grey--text mr-auto">user name</div>
-                    <v-rating
-                      :value="4.5"
-                      color="amber"
-                      dense
-                      half-increments
-                      readonly
-                      size="14"
-                    ></v-rating>
-                    <div class="grey--text ms-1">4.5</div>
+                    <div class="grey--text mr-auto">New review</div>
                   </v-card-title>
                   <v-card-text>
-                    <div>review</div>
+                    <v-textarea outlined v-model="review.description">
+                    </v-textarea>
                   </v-card-text>
+                  <v-card-actions>
+                    <v-rating
+                      color="amber"
+                      v-model="review.rating"
+                      dense
+                      hover
+                      half-increments
+                      size="24"
+                    ></v-rating>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green lighten-2" text @click="submitReview"> Submit </v-btn>
+                  </v-card-actions>
                 </v-card>
+              </v-col>
+              <v-col cols="12">
+                <template v-for="(r, index) in reviews">
+                  <v-card :key="index" class="mb-5">
+                    <v-card-title>
+                      <div class="grey--text mr-auto">{{r.fullName}}</div>
+                      <v-rating
+                        :value="r.rating"
+                        color="amber"
+                        dense
+                        half-increments
+                        readonly
+                        size="18"
+                      ></v-rating>
+                      <div class="grey--text ms-1">{{r.rating}}</div>
+                    </v-card-title>
+                    <v-card-subtitle>
+                      {{r.date}}
+                    </v-card-subtitle>
+                    <v-card-text>
+                      <div>{{r.description}}</div>
+                    </v-card-text>
+                  </v-card>
+                </template>
               </v-col>
             </v-row>
           </v-col>
+
           <v-col cols="6">
             <v-card>
               <v-card-title>Book</v-card-title>
@@ -88,12 +111,42 @@
 <script>
 export default {
   name: "pet",
-  data: () => ({
-      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+  data() {
+    return {
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
       menu: false,
       modal: false,
       menu2: false,
-    }),
+      review: {
+        rating: 0,
+        description: "",
+        reviewer: 1,
+        pet: this.$route.params.id,
+        date: new Date(Date.now()).toISOString().split('T')[0],
+      },
+    };
+  },
+  mounted() {
+    this.$store.dispatch("getPet", this.$route.params.id);
+    this.$store.dispatch("getReviews", this.$route.params.id);
+  },
+  methods: {
+    submitReview() {
+      this.$store.dispatch("createReview", this.review);
+    },
+  },
+  computed: {
+    pet() {
+      return this.$store.state.pet;
+    },
+    reviews() {
+      var reviews = this.$store.state.reviews;
+      reviews.sort((a, b) => (a.rating > b.rating ? -1 : 1));
+      return reviews;
+    },
+  },
 };
 </script>
 
