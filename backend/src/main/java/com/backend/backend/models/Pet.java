@@ -13,6 +13,13 @@ public class Pet {
 
     int age;
 
+    public Pet(String name, int breed, int owner, int age) {
+        this.name = name;
+        this.breed = breed;
+        this.owner = owner;
+        this.age = age;
+    }
+
     public int getID() {
         return ID;
     }
