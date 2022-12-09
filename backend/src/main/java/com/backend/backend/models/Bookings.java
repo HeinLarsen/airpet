@@ -12,9 +12,9 @@ public class Bookings {
 
     String bookee;
 
-    int start;
+    String start;
 
-    int end;
+    String end;
 
     public int getID() {
         return ID;
@@ -40,19 +40,19 @@ public class Bookings {
         this.bookee = bookee;
     }
 
-    public int getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(int start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public int getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(int end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 }
