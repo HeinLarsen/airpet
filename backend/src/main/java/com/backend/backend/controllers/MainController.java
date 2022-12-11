@@ -18,7 +18,7 @@ import java.util.List;
 public class MainController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
-    private String password = "password";
+    private String password = "Admin1234";
     private Connection connection;
     @Autowired
 
@@ -31,40 +31,6 @@ public class MainController {
         {
             e.printStackTrace();
         }
-    }
-
-
-
-    //VIRKER
-    @PostMapping(path = "/addUser")
-    public @ResponseBody String addNewUser (@RequestBody Users u) {
-
-
-
-        String query = "INSERT INTO users (first_name, last_name, email, password, street, street_number, city, zip) VALUES ('" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getEmail() + "', '" + u.getPassword() + "', '" + u.getStreet() + "', " + u.getStreetNumber() + ", '" + u.getCity() + "', " + u.getZip() + ")";
-        try {
-            Statement statement = this.connection.createStatement();
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return "Bing bong bam done...";
-    }
-
-    //VIRKER
-    @PostMapping(path ="/addPet")
-    public @ResponseBody String addNewPet(@RequestBody Pet p){
-
-
-        String query = "INSERT INTO pets (name, breed, owner, age, description) VALUES ('" + p.getName() + "', " + p.getBreed() + ", " + p.getOwner() + ", " + p.getAge() + ", '" + p.getDescription() + "')";
-        try{
-            Statement statement = this.connection.createStatement();
-            statement.executeUpdate(query);
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return "trying to add pets... check run tab";
     }
 
     //VIRKER
@@ -82,10 +48,10 @@ public class MainController {
     }
     //VIRKER IKKE -> DATO & TID
     @PostMapping(path = "/addBooking")
-    public @ResponseBody String addNewBooking(@RequestBody Bookings bo){
+    public String addNewBooking(@RequestBody Bookings bo){
 
 
-        String query = "INSERT INTO bookings(pet, bookee, start, end) VALUES (" + bo.getPet() + ", '" + bo.getBookee() + "', " + bo.getStart() + ", " + bo.getEnd() + ")";
+        String query = "INSERT INTO bookings(pet, bookee, start, end) VALUES (" + bo.getPet() + ", '" + bo.getBookee() + "', '" + bo.getStart() + "', '" + bo.getEnd() + "')";
         try{
             Statement statement = this.connection.createStatement();
             statement.executeUpdate(query);
@@ -95,19 +61,7 @@ public class MainController {
         return "Adding your booking now...";
     }
 
-    //VIRKER
-    @PostMapping(path = "/removePet")
-    public @ResponseBody String removePet(@RequestParam int ID)
-    {
-        String query = "DELETE FROM pets WHERE ID =" + ID;
-        try{
-            Statement statement = this.connection.createStatement();
-            statement.executeUpdate(query);
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        return "trying to remove selected pet:" + ID;
-    }
+
 
     //SKAL TESTES
     @PostMapping(path = "/cancelBooking")
@@ -124,88 +78,13 @@ public class MainController {
     }
 
     //VIRKER
-    @GetMapping(path = "/listUsers")
-            public @ResponseBody Iterable<Users> getAllUsers(){
-        String query = "SELECT * FROM users";
-        ArrayList<Users> users = new ArrayList<>();
-        try {
-            Statement statement = this.connection.createStatement();
-            statement.execute(query);
-            ResultSet resultSet = statement.getResultSet();
-            while(resultSet.next()){
-                int ID = resultSet.getInt("ID");
-                String email = resultSet.getString("email");
-                String firstName = resultSet.getString("first_name");
-                String lastName = resultSet.getString("last_name");
-                String password = resultSet.getString("password");
-                String street = resultSet.getString("street");
-                int streetNumber = resultSet.getInt("street_number");
-                String city = resultSet.getString("city");
-                int zip = resultSet.getInt("zip");
-                Users u = new Users(email, firstName, lastName, password, street, streetNumber, city, zip);
-                u.setId(ID);
-                users.add(u);
-            }
-            for(Users u : users){
-                System.out.println(u);
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return users;
-    }
+
     //TODO
     //lav ListBookings
 
-    //VIRKER
-    @GetMapping(path = "/listPets")
-    public @ResponseBody Iterable<Pet> getPets(){
-        String query = "SELECT * FROM pets";
-        ArrayList<Pet> pets = new ArrayList<>();
-        try {
-            Statement statement = this.connection.createStatement();
-            statement.execute(query);
-            ResultSet resultSet = statement.getResultSet();
-            while(resultSet.next()){
-                int ID = resultSet.getInt("ID");
-                String name = resultSet.getString("name");
-                int breed = resultSet.getInt("breed");
-                int owner = resultSet.getInt("owner");
-                int age= resultSet.getInt("age");
-                String description = resultSet.getString("description");
-
-                Pet p = new Pet(name, breed, owner, age, description);
-                p.setID(ID);
-                pets.add(p);
-            }
-            for(Pet p : pets){
-                System.out.println(p);
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return pets;
-    }
-
-
-
-
-
-
 
     //Skal refactores med anden kode
-    @PostMapping(path = "/updateUser")
-    public @ResponseBody String removeUser(@RequestParam int ID){
 
-        String query = "DELETE FROM users WHERE ID =" + ID;
-        try{
-            Statement statement = this.connection.createStatement();
-            statement.executeUpdate(query);
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return "Trying to remove User";
-    }
 
     @PostMapping(path = "/listBookings")
     public @ResponseBody  Iterable<Bookings> getBookings(){
@@ -219,8 +98,8 @@ public class MainController {
                 int ID = resultSet.getInt("ID");
                 int pet = resultSet.getInt("pet");
                 int bookee = resultSet.getInt("bookee");
-                Date start = resultSet.getDate("start");
-                Date end = resultSet.getDate("end");
+                String start = resultSet.getString("start");
+                String end = resultSet.getString("end");
 
                 Bookings bookings1 = new Bookings();
                 bookings1.setID(ID);
@@ -236,76 +115,8 @@ public class MainController {
     }
     //TODO
     //lave metoder der kan hente specifikke pets, users og senere bookings
-    @GetMapping(path = "/getUser/{ID}")
-    public ResponseEntity<Users> getUser(@PathVariable("ID") int ID){
-        String query = "SELECT * FROM users WHERE ID =" +ID;
-        Users u;
-
-        try {
-            Statement statement = this.connection.createStatement();
-            statement.execute(query);
-            ResultSet resultSet = statement.getResultSet();
-            if (!resultSet.isBeforeFirst() ) {
-
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No valid ID");
-
-            } else {
-                while(resultSet.next()){
-                    ID = resultSet.getInt("ID");
-                    String email = resultSet.getString("email");
-                    String firstName = resultSet.getString("first_name");
-                    String lastName = resultSet.getString("last_name");
-                    String password = resultSet.getString("password");
-                    String street = resultSet.getString("street");
-                    int streetNumber = resultSet.getInt("street_number");
-                    String city = resultSet.getString("city");
-                    int zip = resultSet.getInt("zip");
-                    u = new Users(email, firstName, lastName, password, street, streetNumber, city, zip);
-                    u.setId(ID);
-                    return new ResponseEntity<>(u, HttpStatus.OK);
-                }
-            }
 
 
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @GetMapping(path = "/getPet/{ID}")
-    public ResponseEntity<Pet> getPet(@PathVariable("ID") int ID){
-        String query = "SELECT * FROM pets WHERE ID =" +ID;
-        Pet p;
-
-        try {
-            Statement statement = this.connection.createStatement();
-            statement.execute(query);
-            ResultSet resultSet = statement.getResultSet();
-            if (!resultSet.isBeforeFirst() ) {
-
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No valid ID");
-
-            } else {
-                while(resultSet.next()){
-                    ID = resultSet.getInt("ID");
-                    String name = resultSet.getString("name");
-                    int breed = resultSet.getInt("breed");
-                    int owner = resultSet.getInt("owner");
-                    int age = resultSet.getInt("age");
-                    String description = resultSet.getString("description");
-                    p = new Pet(name, breed, owner, age, description);
-                    p.setID(ID);
-                    return new ResponseEntity<>(p, HttpStatus.OK);
-                }
-            }
-
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     @PostMapping(path = "/addReview")
     public String addReview(@RequestBody Review review){

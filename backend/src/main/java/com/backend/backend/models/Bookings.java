@@ -8,9 +8,9 @@ public class Bookings {
 
     int ID;
 
-    Pet pet;
+    int pet;
 
-    String bookee;
+    int bookee;
 
     String start;
 
@@ -24,19 +24,19 @@ public class Bookings {
         this.ID = ID;
     }
 
-    public Pet getPet() {
+    public int getPet() {
         return pet;
     }
 
-    public void setPet(Pet pet) {
+    public void setPet(int pet) {
         this.pet = pet;
     }
 
-    public String getBookee() {
+    public int getBookee() {
         return bookee;
     }
 
-    public void setBookee(String bookee) {
+    public void setBookee(int bookee) {
         this.bookee = bookee;
     }
 
