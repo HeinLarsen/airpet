@@ -7,6 +7,8 @@ public class Pet {
     //it is a String in Breeds Table
     private int breed;
 
+    private int species;
+
     // it's a String in Users Table
     private int owner;
 
@@ -14,12 +16,19 @@ public class Pet {
 
     private String description;
 
-    public Pet(String name, int breed, int owner, int age, String description) {
+    private float latitude;
+
+    private float longitude;
+
+    public Pet(String name, int breed, int species, int owner, int age, String description, float latitude, float longitude) {
         this.name = name;
         this.breed = breed;
+        this.species = species;
         this.owner = owner;
         this.age = age;
         this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
 
@@ -38,6 +47,14 @@ public class Pet {
 
     public void setBreed(int breed) {
         this.breed = breed;
+    }
+
+    public int getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(int species) {
+        this.species = species;
     }
 
     public int getOwner() {
@@ -64,6 +81,20 @@ public class Pet {
         return description;
     }
 
+    public float getLatitude() {
+        return latitude;
+    }
 
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
 }
 

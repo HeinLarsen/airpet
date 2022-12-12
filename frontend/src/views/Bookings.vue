@@ -61,7 +61,9 @@ export default {
   },
   computed: {
     bookings() {
-      return this.$store.state.bookings;
+      var b = this.$store.state.bookings;
+      // invert the array
+      return b.reverse();
     },
   },
 };

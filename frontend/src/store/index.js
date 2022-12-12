@@ -13,6 +13,8 @@ export default new Vuex.Store({
     pets: [],
     reviews: [],
     bookings: [],
+    species: [],
+    breeds: [],
   },
   getters: {
     user(state) {
@@ -29,7 +31,13 @@ export default new Vuex.Store({
     },
     bookings(state) {
       return state.bookings
-    }
+    },
+    species(state) {
+      return state.species
+    },
+    breeds(state) {
+      return state.breeds
+    },
   },
   mutations: {
     setUser(state, user) {
@@ -46,7 +54,13 @@ export default new Vuex.Store({
     },
     setBookings(state, bookings) {
       state.bookings = bookings
-    }
+    },
+    setSpecies(state, species) {
+      state.species = species
+    },
+    setBreeds(state, breeds) {
+      state.breeds = breeds
+    },
   },
   actions: {
     async loadUser(context) {
@@ -191,6 +205,46 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error);
       }
+    },
+    async getSpecies(context) {
+      var options = {
+        method: 'GET',
+        url: 'http://localhost:8080/species/getSpecies',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      let species = await axios(options)
+      context.commit('setSpecies', species.data)
+    },
+    async getBreeds(context) {
+      var options = {
+        method: 'GET',
+        url: 'http://localhost:8080/breed/getBreeds',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      let breeds = await axios(options)
+      context.commit('setBreeds', breeds.data)
+    },
+    async addPet(context, data) {
+      console.log(data);
+      var options = {
+        method: 'POST',
+        url: 'http://localhost:8080/pet/addPet',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: data
+      }
+      try {
+        await axios(options)
+      }
+      catch (error) {
+        console.log(error);
+      }
+
     }
   },
   modules: {

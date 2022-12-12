@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <div class="d-flex align-center">
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor: pointer">
         <v-icon large>mdi-paw</v-icon>
-        <router-link to="/">
-          <h1>Airpets</h1>
+          Airpets
         </router-link>
-      </div>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 

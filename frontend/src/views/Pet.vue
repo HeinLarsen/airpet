@@ -39,7 +39,7 @@
                     <div class="grey--text mr-auto">New review</div>
                   </v-card-title>
                   <v-card-text>
-                    <v-textarea outlined v-model="review.description">
+                    <v-textarea rows="3" class="mb-2" outlined v-model="review.description">
                     </v-textarea>
                   </v-card-text>
                   <v-card-actions>
@@ -86,7 +86,7 @@
           </v-col>
           <v-col cols="6">
             <v-card>
-              <v-card-title>Book</v-card-title>
+              <v-card-title class="grey--text">Book</v-card-title>
               <v-card-text>
                 <v-menu
                   ref="menu"
@@ -210,6 +210,7 @@ export default {
         end: this.date2,
       });
     },
+
   },
   computed: {
     pet() {

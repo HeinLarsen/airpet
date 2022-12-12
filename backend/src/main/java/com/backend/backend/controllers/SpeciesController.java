@@ -1,26 +1,26 @@
 package com.backend.backend.controllers;
 
-import com.backend.backend.models.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+        import com.backend.backend.models.*;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.http.HttpStatus;
+        import org.springframework.http.ResponseEntity;
+        import org.springframework.web.bind.annotation.*;
 
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+        import java.sql.*;
+        import java.util.ArrayList;
+        import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
-@RequestMapping(path="/breed")
-public class BreedController {
-    private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
-    private String username = "root";
-    private String password = "password";
+@RequestMapping(path="/species")
+public class SpeciesController {
+    private final String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
+    private final String username = "root";
+    private final String password = "password";
     private Connection connection;
+
     @Autowired
-    public BreedController() {
+    public SpeciesController() {
         try{
             connection = DriverManager.getConnection(url, username, password);
         }
@@ -30,10 +30,10 @@ public class BreedController {
         }
     }
 
-    @GetMapping(path = "/getBreeds")
-    public ResponseEntity<List<Breeds>> getBreeds() {
-        String query = "select * from breeds";
-        List<Breeds> breeds = new ArrayList<>();
+    @GetMapping(path = "/getSpecies")
+    public ResponseEntity<List<Species>> getBreeds() {
+        String query = "select * from species";
+        List<Species> species = new ArrayList<>();
 
         try {
             Statement statement = this.connection.createStatement();
@@ -42,15 +42,14 @@ public class BreedController {
             ResultSet resultSet = statement.getResultSet();
             while(resultSet.next()){
                 int ID = resultSet.getInt("ID");
-                int species = resultSet.getInt("species");
-                String breed = resultSet.getString("breed");
-                Breeds b = new Breeds(ID, species, breed);
-                breeds.add(b);
+                String specie = resultSet.getString("species");
+                Species b = new Species(ID, specie);
+                species.add(b);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(breeds, HttpStatus.OK);
+        return new ResponseEntity<>(species, HttpStatus.OK);
     }
 
     @PostMapping(path = "/addBreed")

@@ -12,8 +12,8 @@ public class PetView extends Pet {
 
 
 
-    public PetView(String name, int breed, int owner, int age, String description, int ID, float rating, int ratingCount, String ownerName) {
-        super(name, breed, owner, age, description);
+    public PetView(String name, int breed, int species, int owner, int age, String description, float latitude, float longitude, int ID, float rating, int ratingCount, String ownerName) {
+        super(name, breed, species, owner, age, description, latitude, longitude);
         this.ID = ID;
         this.rating = rating;
         this.ratingCount = ratingCount;

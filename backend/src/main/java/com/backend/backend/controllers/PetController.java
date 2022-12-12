@@ -37,7 +37,7 @@ public class PetController {
     public @ResponseBody String addNewPet(@RequestBody Pet p){
 
 
-        String query = "INSERT INTO pets (name, breed, owner, age, description) VALUES ('" + p.getName() + "', " + p.getBreed() + ", " + p.getOwner() + ", " + p.getAge() + ", '" + p.getDescription() + "')";
+        String query = "INSERT INTO pets (name, breed, species, owner, age, description, latitude, longitude) VALUES ('" + p.getName() + "', " + p.getBreed() + ", " + p.getSpecies() + ", " + p.getOwner() + ", " + p.getAge() + ", '" + p.getDescription() + "', " + p.getLatitude() + "," + p.getLongitude() + ")";
         try{
             Statement statement = this.connection.createStatement();
             statement.executeUpdate(query);
@@ -72,13 +72,16 @@ public class PetController {
                 int ID = resultSet.getInt("ID");
                 String name = resultSet.getString("name");
                 int breed = resultSet.getInt("breed");
+                int species = resultSet.getInt("species");
                 int owner = resultSet.getInt("owner");
                 int age= resultSet.getInt("age");
                 String description = resultSet.getString("description");
                 float rating = resultSet.getFloat("rating");
                 int ratingCount = resultSet.getInt("rating_count");
                 String ownerName = resultSet.getString("owner_name");
-                PetView p = new PetView(name, breed, owner, age, description, ID, rating, ratingCount, ownerName);
+                float latitude = resultSet.getFloat("latitude");
+                float longitude = resultSet.getFloat("longitude");
+                PetView p = new PetView(name, breed, species, owner, age, description, latitude, longitude, ID, rating, ratingCount, ownerName);
                 pets.add(p);
             }
         }catch (SQLException e){
@@ -103,13 +106,16 @@ public class PetController {
                     ID = resultSet.getInt("ID");
                     String name = resultSet.getString("name");
                     int breed = resultSet.getInt("breed");
+                    int species = resultSet.getInt("species");
                     int owner = resultSet.getInt("owner");
                     int age= resultSet.getInt("age");
                     String description = resultSet.getString("description");
                     float rating = resultSet.getFloat("rating");
                     int ratingCount = resultSet.getInt("rating_count");
                     String ownerName = resultSet.getString("owner_name");
-                    p = new PetView(name, breed, owner, age, description, ID, rating, ratingCount, ownerName);
+                    float latitude = resultSet.getFloat("latitude");
+                    float longitude = resultSet.getFloat("longitude");
+                    p = new PetView(name, breed, species, owner, age, description, latitude, longitude, ID, rating, ratingCount, ownerName);
                     return new ResponseEntity<>(p, HttpStatus.OK);
                 }
             }
