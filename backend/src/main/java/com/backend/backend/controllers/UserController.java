@@ -9,12 +9,11 @@ import org.springframework.web.server.ResponseStatusException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
-@RequestMapping(path="/UserController")
+@RequestMapping(path="/user")
 public class UserController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
@@ -141,7 +140,6 @@ public class UserController {
 
     @PostMapping(path = "/login")
     public ResponseEntity<Users> login(@RequestBody Map<String, String> data) {
-        System.out.println(data);
         String query = ("SELECT * FROM users WHERE email = '"+data.get("email")+"' AND password = '"+data.get("password")+"'");
         Users u;
         try {
