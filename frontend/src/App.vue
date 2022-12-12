@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <v-app-bar app>
+    <v-app-bar app dense>
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
-        <v-icon large>mdi-paw</v-icon>
+          <v-icon large>mdi-paw</v-icon>
           Airpets
         </router-link>
       </v-toolbar-title>
@@ -16,10 +16,24 @@
           <v-btn to="/signup" text> signup </v-btn>
         </template>
         <template v-else>
-          <v-btn to="/bookings" text> My bookings </v-btn>
-          <v-btn to="/addPet" text> Add pet </v-btn>
-          <v-btn to="/profile" text> profile </v-btn>
-          <v-btn @click="logout" text> logout </v-btn>
+          <v-hover v-slot="{ hover }">
+            <v-btn to="/bookings" text :color="hover ? 'blue accent-2' : 'white'"> my bookings
+          </v-btn>
+          </v-hover>
+          <v-hover v-slot="{ hover }">
+            <v-btn to="/addPet" text :color="hover ? 'green accent-3' : 'white'"> add pet </v-btn>
+          </v-hover>
+
+          <v-hover v-slot="{ hover }">
+            <v-btn to="/profile" text :color="hover ? 'blue accent-2' : 'white'"> profile
+          </v-btn>
+          </v-hover>
+
+          <v-hover v-slot="{ hover }">
+            <v-btn @click="logout" icon>
+            <v-icon :color="hover ? 'red accent-3' : 'grey'">mdi-logout</v-icon>
+          </v-btn>
+          </v-hover>
         </template>
       </v-toolbar-items>
     </v-app-bar>
@@ -49,3 +63,6 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+</style>
+

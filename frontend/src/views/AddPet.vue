@@ -6,13 +6,13 @@
           <v-col cols="6">
             <v-row>
               <v-col cols="12">
-                <v-text-field v-model="pet.name" label="name"> </v-text-field>
+                <v-text-field v-model="pet.name" outlined label="name"> </v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field v-model="pet.age" label="age" type="number"> </v-text-field>
+                <v-text-field v-model="pet.age" outlined label="age" type="number"> </v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-select
+                <v-select outlined
                   :items="species"
                   v-model="pet.species"
                   item-text="species"
@@ -21,7 +21,7 @@
                 ></v-select>
               </v-col>
               <v-col cols="12">
-                <v-select
+                <v-select outlined
                   :items="breeds"
                   v-model="pet.breed"
                   item-text="breed"
@@ -35,7 +35,7 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <v-textarea
+            <v-textarea outlined
               v-model="pet.description"
               label="beskrivelse"
             ></v-textarea>
@@ -43,7 +43,7 @@
         </v-row>
         <v-row justify="center">
           <v-col cols="auto">
-            <v-btn color="green" @click="addPet" text> add </v-btn>
+            <v-btn class="green--text text--accent-3" outlined @click="addPet"> add </v-btn>
           </v-col>
         </v-row>
       </v-col>

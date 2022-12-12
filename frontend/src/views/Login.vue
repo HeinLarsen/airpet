@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-row justify="center">
           <v-col lg="3" sm="6" xs="12">
-            <v-text-field
+            <v-text-field outlined
               v-model="email"
               type="email"
               label="Email"
@@ -14,12 +14,12 @@
         </v-row>
         <v-row justify="center">
           <v-col lg="3" sm="6" xs="12">
-            <v-text-field v-model="password" type="password" label="Password" />
+            <v-text-field v-model="password" outlined type="password" label="Password" />
           </v-col>
         </v-row>
         <v-row justify="center">
           <v-col cols="auto">
-            <v-btn @click="login" color="blue" text> login </v-btn>
+            <v-btn @click="login" class="blue--text text--accent-2" outlined> login </v-btn>
           </v-col>
         </v-row>
       </v-col>

@@ -3,15 +3,19 @@
     <v-row justify="center">
       <v-col cols="8">
         <v-row>
-          <v-col cols="auto" class="mr-auto">
+          <v-col cols="auto">
             <h1>{{ pet.name }}</h1>
-            <i class="grey--text">{{ pet.ownerName }}</i>
+            <i class="grey--text">{{ pet.age }} years</i>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="auto" class="ml-auto">
             <v-rating
-              class="mt-10"
+              class="mt-4"
               :value="pet.rating"
-              color="amber"
+              background-color="grey darken-3"
+              color="red"
+              full-icon="mdi-heart"
+              half-icon="mdi-heart-half-full"
+              empty-icon="mdi-heart-outline"
               dense
               half-increments
               readonly
@@ -21,11 +25,15 @@
         </v-row>
         <v-row>
           <v-col cols="12" md="6">
-            {{ pet.description }}
+            <v-card class="fill-height">
+              <v-card-text>
+                {{ pet.description }}
+              </v-card-text>
+            </v-card>
           </v-col>
           <v-col cols="12" md="6">
             <v-img
-              class="rounded-lg"
+              class="rounded"
               src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
             />
           </v-col>
@@ -36,15 +44,24 @@
               <v-col cols="12">
                 <v-card>
                   <v-card-title>
-                    <div class="grey--text mr-auto">New review</div>
+                    <div class="grey--text mr-auto">Write a review!</div>
                   </v-card-title>
                   <v-card-text>
-                    <v-textarea rows="3" class="mb-2" outlined v-model="review.description">
+                    <v-textarea
+                      rows="3"
+                      class="mb-2"
+                      outlined
+                      v-model="review.description"
+                    >
                     </v-textarea>
                   </v-card-text>
                   <v-card-actions>
                     <v-rating
-                      color="amber"
+                      background-color="grey darken-3"
+                      color="red"
+                      full-icon="mdi-heart"
+                      half-icon="mdi-heart-half-full"
+                      empty-icon="mdi-heart-outline"
                       v-model="review.rating"
                       dense
                       hover
@@ -52,7 +69,11 @@
                       size="24"
                     ></v-rating>
                     <v-spacer></v-spacer>
-                    <v-btn color="green lighten-2" text @click="submitReview">
+                    <v-btn
+                      class="green--text text--accent-3"
+                      outlined
+                      @click="submitReview"
+                    >
                       Submit
                     </v-btn>
                   </v-card-actions>
@@ -65,7 +86,11 @@
                       <div class="grey--text mr-auto">{{ r.fullName }}</div>
                       <v-rating
                         :value="r.rating"
-                        color="amber"
+                        background-color="grey darken-3"
+                        color="red"
+                        full-icon="mdi-heart"
+                        half-icon="mdi-heart-half-full"
+                        empty-icon="mdi-heart-outline"
                         dense
                         half-increments
                         readonly
@@ -86,7 +111,9 @@
           </v-col>
           <v-col cols="6">
             <v-card>
-              <v-card-title class="grey--text">Book</v-card-title>
+              <v-card-title class="grey--text"
+                >Book a day with {{ pet.name }}</v-card-title
+              >
               <v-card-text>
                 <v-menu
                   ref="menu"
@@ -98,7 +125,7 @@
                   min-width="auto"
                 >
                   <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
+                    <v-text-field outlined
                       v-model="date"
                       prepend-icon="mdi-calendar"
                       readonly
@@ -131,7 +158,7 @@
                   min-width="auto"
                 >
                   <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
+                    <v-text-field outlined
                       v-model="date2"
                       prepend-icon="mdi-calendar"
                       readonly
@@ -149,15 +176,23 @@
                     <v-btn text color="primary" @click="menu2 = false">
                       Cancel
                     </v-btn>
-                    <v-btn text color="primary" @click="$refs.menu2.save(date2)">
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.menu2.save(date2)"
+                    >
                       OK
                     </v-btn>
                   </v-date-picker>
                 </v-menu>
               </v-card-text>
               <v-card-actions>
-                <v-btn class="ml-auto" outlined rounded small @click="book()">
-                  Book
+                <v-btn
+                  class="ml-auto green--text text--accent-3"
+                  outlined
+                  @click="book()"
+                >
+                  book now
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -210,7 +245,6 @@ export default {
         end: this.date2,
       });
     },
-
   },
   computed: {
     pet() {

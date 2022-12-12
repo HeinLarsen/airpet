@@ -23,7 +23,7 @@
                 </div>
   
                 <v-avatar
-                  class="ma-3 rounded-lg"
+                  class="ma-3 rounded"
                   size="125"
                   tile
                 >
@@ -32,10 +32,8 @@
               </div>
               <v-card-actions>
                     <v-btn
-                      class="ml-auto"
+                      class="ml-auto red--text text--accent-3"
                       outlined
-                      rounded
-                      small
                       @click="cancelBooking(b.id)"
                     >
                       cancel

@@ -4,7 +4,7 @@
         <v-col cols="12" lg="6">
           <v-row justify="center">
             <v-col sm=6 xs=12>
-              <v-text-field
+              <v-text-field outlined
                 v-model="user.email"
                 type="email"
                 label="Email"
@@ -12,52 +12,52 @@
               />
             </v-col>
             <v-col sm=6 xs=12>
-              <v-text-field
+              <v-text-field outlined
                 v-model="user.password"
-                type="password"
+                type="Password"
                 label="Password"
               />
             </v-col>
             <v-col sm=6 xs=12>
-              <v-text-field
+              <v-text-field outlined
                 v-model="user.firstName"
-                label="Fornavn"
+                label="First name"
               />
             </v-col>
             <v-col sm=6 xs=12>
-              <v-text-field
+              <v-text-field outlined
                 v-model="user.lastName"
-                label="Efternavn"
+                label="Last name"
               />
             </v-col>
             <v-col sm=6 xs=12>
-              <v-text-field
+              <v-text-field outlined
                 v-model="user.street"
-                label="Vejnavn"
+                label="Street name"
               />
             </v-col>
             <v-col sm=6 xs=12>
-              <v-text-field
+              <v-text-field outlined
                 v-model="user.streetNumber"
-                label="Husnummer"
+                label="Street number"
               />
             </v-col>
             <v-col sm=6 xs=12>
-              <v-text-field
+              <v-text-field outlined
                 v-model="user.city"
-                label="By"
+                label="City"
               />
             </v-col>
             <v-col sm=6 xs=12>
-              <v-text-field
+              <v-text-field outlined
                 v-model="user.zip"
-                label="Post kode"
+                label="Zip code"
               />
             </v-col>
           </v-row>
           <v-row justify="center">
             <v-col cols="auto">
-              <v-btn @click="signup" color="green" text> signup </v-btn>
+              <v-btn @click="signup" class="green--text text--accent-3" outlined> signup </v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -75,9 +75,9 @@ export default {
       lastName: '',
       password: '',
       street: '',
-      streetNumber: 0,
+      streetNumber: null,
       city: '',
-      zip: 0,  
+      zip: null,  
     },
     emailRules: [
       v => !!v || 'E-mail is required',
