@@ -37,9 +37,10 @@
         </template>
       </v-toolbar-items>
     </v-app-bar>
-
     <v-main>
+    <v-slide-y-transition mode="out-in">
       <router-view />
+       </v-slide-y-transition>
     </v-main>
   </v-app>
 </template>
