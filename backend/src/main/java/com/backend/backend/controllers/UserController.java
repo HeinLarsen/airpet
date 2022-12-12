@@ -10,6 +10,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
@@ -47,37 +48,6 @@ public class UserController {
         return "Bing bong bam done...";
     }
 
-    @GetMapping(path = "/listUsers")
-    public @ResponseBody Iterable<Users> getAllUsers(){
-        String query = "SELECT * FROM users";
-        ArrayList<Users> users = new ArrayList<>();
-        try {
-            Statement statement = this.connection.createStatement();
-            statement.execute(query);
-            ResultSet resultSet = statement.getResultSet();
-            while(resultSet.next()){
-                int ID = resultSet.getInt("ID");
-                String email = resultSet.getString("email");
-                String firstName = resultSet.getString("first_name");
-                String lastName = resultSet.getString("last_name");
-                String password = resultSet.getString("password");
-                String street = resultSet.getString("street");
-                int streetNumber = resultSet.getInt("street_number");
-                String city = resultSet.getString("city");
-                int zip = resultSet.getInt("zip");
-                Users u = new Users(email, firstName, lastName, password, street, streetNumber, city, zip);
-                u.setId(ID);
-                users.add(u);
-            }
-            for(Users u : users){
-                System.out.println(u);
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return users;
-    }
-
     @PostMapping(path = "/updateUser")
     public @ResponseBody String removeUser(@RequestParam int ID){
 
@@ -90,6 +60,46 @@ public class UserController {
         }
         return "Trying to remove User";
     }
+
+
+    public Users genUser(ResultSet resultSet) throws SQLException {
+        Users u;
+            int ID = resultSet.getInt("ID");
+            String email = resultSet.getString("email");
+            String firstName = resultSet.getString("first_name");
+            String lastName = resultSet.getString("last_name");
+            String password = resultSet.getString("password");
+            String street = resultSet.getString("street");
+            int streetNumber = resultSet.getInt("street_number");
+            String city = resultSet.getString("city");
+            int zip = resultSet.getInt("zip");
+            u = new Users(email, firstName, lastName, password, street, streetNumber, city, zip);
+            u.setId(ID);
+        return u;
+    }
+
+    @GetMapping(path = "/listUsers")
+    public @ResponseBody Iterable<Users> getAllUsers(){
+        String query = "SELECT * FROM users";
+        ArrayList<Users> users = new ArrayList<>();
+        try {
+            Statement statement = this.connection.createStatement();
+            statement.execute(query);
+            ResultSet resultSet = statement.getResultSet();
+            while(resultSet.next()){
+                Users u = genUser(resultSet);
+                users.add(u);
+            }
+            for(Users u : users){
+                System.out.println(u);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+
 
     @GetMapping(path = "/getUser/{ID}")
     public ResponseEntity<Users> getUser(@PathVariable("ID") int ID){
@@ -126,6 +136,38 @@ public class UserController {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    @PostMapping(path = "/login")
+    public ResponseEntity<Users> login(@RequestBody Map<String, String> data) {
+        System.out.println(data);
+        String query = ("SELECT * FROM users WHERE email = '"+data.get("email")+"' AND password = '"+data.get("password")+"'");
+        Users u;
+        try {
+            Statement statement = this.connection.createStatement();
+            statement.execute(query);
+            ResultSet resultSet = statement.getResultSet();
+
+            while(resultSet.next()) {
+                int ID = resultSet.getInt("ID");
+                String email = resultSet.getString("email");
+                String password = resultSet.getString("password");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String street = resultSet.getString("street");
+                int streetNumber = resultSet.getInt("street_number");
+                String city = resultSet.getString("city");
+                int zip = resultSet.getInt("zip");
+                u = new Users(email, firstName, lastName, password, street, streetNumber, city, zip);
+                u.setId(ID);
+                return new ResponseEntity<>(u, HttpStatus.OK);
+            }
+        } catch (SQLException f) {
+            f.printStackTrace();
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 

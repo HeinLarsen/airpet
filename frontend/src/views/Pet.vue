@@ -138,7 +138,7 @@ export default {
       review: {
         rating: 0,
         description: "",
-        reviewer: 1,
+        reviewer: this.$store.state.user.id,
         pet: this.$route.params.id,
         date: new Date(Date.now()).toISOString().split("T")[0],
       },

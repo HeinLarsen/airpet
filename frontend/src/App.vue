@@ -1,38 +1,51 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-    >
+    <v-app-bar app>
       <div class="d-flex align-center">
-        <h1>Airpets</h1>
+        <v-icon large>mdi-paw</v-icon>
+        <router-link to="/">
+          <h1>Airpets</h1>
+        </router-link>
       </div>
 
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
-        <v-btn to="/login" text>
-          login
-        </v-btn>
-        <v-btn to="/signup" text>
-          signup
-        </v-btn>
+        <template v-if="!auth">
+          <v-btn to="/login" text> login </v-btn>
+          <v-btn to="/signup" text> signup </v-btn>
+        </template>
+        <template v-else>
+          <v-btn to="/bookings" text> My bookings </v-btn>
+          <v-btn to="/addPet" text> Add pet </v-btn>
+          <v-btn to="/profile" text> profile </v-btn>
+          <v-btn @click="logout" text> logout </v-btn>
+        </template>
       </v-toolbar-items>
-      
     </v-app-bar>
 
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
-
-  data: () => ({
-    //
-  }),
+  name: "App",
+  data: () => ({}),
+  created() {
+    this.$store.dispatch("loadUser");
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    },
+  },
+  computed: {
+    auth() {
+      return this.$store.state.auth;
+    },
+  },
 };
 </script>

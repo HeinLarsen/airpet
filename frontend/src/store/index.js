@@ -1,16 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import router from '@/router'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    auth: false,
+    user: {},
     pet: {},
     pets: [],
     reviews: []
   },
   getters: {
+    user(state) {
+      return state.user
+    },
     pet(state) {
       return state.pet
     },
@@ -22,6 +28,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setUser(state, user) {
+      state.user = user
+    },
     setPet(state, pet) {
       state.pet = pet
     },
@@ -33,6 +42,39 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async loadUser(context) {
+      let user = JSON.parse(localStorage.getItem('user'))
+      if (user) {
+        context.commit('setUser', user)
+        context.state.auth = true
+      }
+    },
+    async login(context, data) {
+      console.log(data);
+      var options = {
+        method: 'POST',
+        url: 'http://localhost:8080/UserController/login',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: data
+      }
+      try {
+        const response = await axios(options)
+        localStorage.setItem('user', JSON.stringify(response.data))
+        context.commit('setUser', response.data)
+        context.state.auth = true
+        router.push('/')
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async logout(context) {
+      localStorage.removeItem('user')
+      context.commit('setUser', {})
+      context.state.auth = false
+      router.push('/')
+    },
     async addUser({ commit }, data) {
       console.log(data);
       var options = {
@@ -40,7 +82,6 @@ export default new Vuex.Store({
         url: 'http://localhost:8080/UserController/addUser',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Request-Headers': 'Content-Type, Authorization'
         },
         data: data
       }
