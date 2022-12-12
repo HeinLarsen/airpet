@@ -13,15 +13,14 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
-@RequestMapping(path="/demo")
-public class MainController {
+@RequestMapping(path="/review")
+public class ReviewController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
     private String password = "password";
     private Connection connection;
     @Autowired
-
-    public MainController() {
+public  ReviewController() {
         try
         {
             connection = DriverManager.getConnection(url, username, password);
@@ -31,91 +30,6 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
-    //VIRKER
-    @PostMapping(path = "/addBreed")
-    public @ResponseBody String addNewBreed(@RequestBody Breeds b){
-
-        String query = "INSERT INTO breeds(breed) VALUES ('" + b.getBreed() + "')";
-        try{
-            Statement statement = this.connection.createStatement();
-            statement.executeUpdate(query);
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        return "Adding breed...";
-    }
-    //VIRKER IKKE -> DATO & TID
-    @PostMapping(path = "/addBooking")
-    public String addNewBooking(@RequestBody Bookings bo){
-
-
-        String query = "INSERT INTO bookings(pet, bookee, start, end) VALUES (" + bo.getPet() + ", '" + bo.getBookee() + "', '" + bo.getStart() + "', '" + bo.getEnd() + "')";
-        try{
-            Statement statement = this.connection.createStatement();
-            statement.executeUpdate(query);
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        return "Adding your booking now...";
-    }
-
-
-
-    //SKAL TESTES
-    @PostMapping(path = "/cancelBooking")
-    public @ResponseBody String cancelBooking(@RequestParam int ID)
-    {
-        String query = "DELETE FROM bookings WHERE ID = " + ID;
-        try{
-            Statement statement = this.connection.createStatement();
-            statement.executeUpdate(query);
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return "Cancelling your booking: Booking Number: " + ID;
-    }
-
-    //VIRKER
-
-    //TODO
-    //lav ListBookings
-
-
-    //Skal refactores med anden kode
-
-
-    @PostMapping(path = "/listBookings")
-    public @ResponseBody  Iterable<Bookings> getBookings(){
-        String query = "SELECT * FROM bookings";
-        ArrayList<Bookings> bookings = new ArrayList<>();
-        try {
-            Statement statement = this.connection.createStatement();
-            statement.execute(query);
-            ResultSet resultSet = statement.getResultSet();
-            while(resultSet.next()){
-                int ID = resultSet.getInt("ID");
-                int pet = resultSet.getInt("pet");
-                int bookee = resultSet.getInt("bookee");
-                String start = resultSet.getString("start");
-                String end = resultSet.getString("end");
-
-                Bookings bookings1 = new Bookings();
-                bookings1.setID(ID);
-                bookings.add(bookings1);
-            }
-            for(Bookings b : bookings){
-                System.out.println(bookings);
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return bookings;
-    }
-    //TODO
-    //lave metoder der kan hente specifikke pets, users og senere bookings
-
-
 
     @PostMapping(path = "/addReview")
     public String addReview(@RequestBody Review review){
@@ -169,6 +83,4 @@ public class MainController {
         }
         return null;
     }
-
 }
-

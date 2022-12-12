@@ -7,13 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
-@RequestMapping(path="/UserController")
+@RequestMapping(path="/user")
 public class UserController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
