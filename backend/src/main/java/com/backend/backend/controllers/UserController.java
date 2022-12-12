@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/updateUser")
-    public @ResponseBody String removeUser(@RequestParam int ID){
+    public @ResponseBody String removeUser(@RequestParam int ID) {
 
         String query = "DELETE FROM users WHERE ID =" + ID;
         try{

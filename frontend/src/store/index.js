@@ -11,7 +11,8 @@ export default new Vuex.Store({
     user: {},
     pet: {},
     pets: [],
-    reviews: []
+    reviews: [],
+    bookings: [],
   },
   getters: {
     user(state) {
@@ -25,6 +26,9 @@ export default new Vuex.Store({
     },
     reviews(state) {
       return state.reviews
+    },
+    bookings(state) {
+      return state.bookings
     }
   },
   mutations: {
@@ -39,6 +43,9 @@ export default new Vuex.Store({
     },
     setReviews(state, reviews) {
       state.reviews = reviews
+    },
+    setBookings(state, bookings) {
+      state.bookings = bookings
     }
   },
   actions: {
@@ -139,6 +146,48 @@ export default new Vuex.Store({
       try {
         await axios(options)
         context.dispatch('getReviews', data.pet)
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async createBooking(context, data) {
+      console.log(data);
+      var options = {
+        method: 'POST',
+        url: 'http://localhost:8080/booking/addBooking',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: data
+      }
+      try {
+        await axios(options)
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getBookings(context) {
+      var options = {
+        method: 'GET',
+        url: 'http://localhost:8080/booking/listBookings/' + context.state.user.id,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      const bookings = await axios(options)
+      context.commit('setBookings', bookings.data)
+    },
+    async cancelBooking(context, id) {
+      var options = {
+        method: 'DELETE',
+        url: 'http://localhost:8080/booking/cancelBooking/' + id,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      try {
+        await axios(options)
+        context.dispatch('getBookings')
       } catch (error) {
         console.log(error);
       }

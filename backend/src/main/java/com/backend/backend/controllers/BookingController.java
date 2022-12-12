@@ -2,11 +2,15 @@ package com.backend.backend.controllers;
 
 import com.backend.backend.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(path="/booking")
@@ -29,8 +33,6 @@ public BookingController(){
 
     @PostMapping(path = "/addBooking")
     public String addNewBooking(@RequestBody Bookings bo){
-
-
         String query = "INSERT INTO bookings(pet, bookee, start, end) VALUES (" + bo.getPet() + ", '" + bo.getBookee() + "', '" + bo.getStart() + "', '" + bo.getEnd() + "')";
         try{
             Statement statement = this.connection.createStatement();
@@ -41,8 +43,8 @@ public BookingController(){
         return "Adding your booking now...";
     }
 
-    @PostMapping(path = "/cancelBooking")
-    public @ResponseBody String cancelBooking(@RequestParam int ID)
+    @DeleteMapping(path = "/cancelBooking/{ID}")
+    public @ResponseBody String cancelBooking(@PathVariable("ID") int ID)
     {
         String query = "DELETE FROM bookings WHERE ID = " + ID;
         try{
@@ -54,32 +56,30 @@ public BookingController(){
         return "Cancelling your booking: Booking Number: " + ID;
     }
 
-    @PostMapping(path = "/listBookings")
-    public @ResponseBody  Iterable<Bookings> getBookings(){
-        String query = "SELECT * FROM bookings";
-        ArrayList<Bookings> bookings = new ArrayList<>();
+    @GetMapping(path = "/listBookings/{ID}")
+    public ResponseEntity<List<BookingView>> getBookings(@PathVariable("ID") int ID){
+        String query = "SELECT * FROM bookings_view where bookee = "+ ID;
+        ArrayList<BookingView> bookings = new ArrayList<>();
         try {
             Statement statement = this.connection.createStatement();
             statement.execute(query);
             ResultSet resultSet = statement.getResultSet();
             while(resultSet.next()){
-                int ID = resultSet.getInt("ID");
+                ID = resultSet.getInt("ID");
                 int pet = resultSet.getInt("pet");
                 int bookee = resultSet.getInt("bookee");
                 String start = resultSet.getString("start");
                 String end = resultSet.getString("end");
+                String petName = resultSet.getString("pet_name");
+                String petDescription = resultSet.getString("pet_description");
+                BookingView b = new BookingView(pet, bookee, start, end, ID, petName, petDescription);
+                bookings.add(b);
+            }
 
-                Bookings bookings1 = new Bookings();
-                bookings1.setID(ID);
-                bookings.add(bookings1);
-            }
-            for(Bookings b : bookings){
-                System.out.println(bookings);
-            }
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return bookings;
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
 

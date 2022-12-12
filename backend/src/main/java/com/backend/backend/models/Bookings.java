@@ -1,27 +1,20 @@
 package com.backend.backend.models;
-
-
-
-
-
 public class Bookings {
 
-    int ID;
 
-    int pet;
+    private int pet;
 
-    int bookee;
+    private int bookee;
 
-    String start;
+    private String start;
 
-    String end;
+    private String end;
 
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
+    public Bookings(int pet, int bookee, String start, String end) {
+        this.pet = pet;
+        this.bookee = bookee;
+        this.start = start;
+        this.end = end;
     }
 
     public int getPet() {

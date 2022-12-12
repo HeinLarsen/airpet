@@ -30,14 +30,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "pet" */ '../views/Pet.vue')
   },
   {
-    path: '/addBooking',
-    name: 'addBooking',
-    component: () => import(/* webpackChunkName: "addBooking" */ '../views/AddBooking.vue')
-  },
-  {
-    path: '/booking/:id',
+    path: '/bookings',
     name: 'booking',
-    component: () => import(/* webpackChunkName: "booking" */ '../views/Booking.vue')
+    component: () => import(/* webpackChunkName: "booking" */ '../views/Bookings.vue')
   }
 ]
 
