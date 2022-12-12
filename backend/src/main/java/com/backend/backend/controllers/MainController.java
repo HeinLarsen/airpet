@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
 public class MainController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
-    private String password = "Admin1234";
+    private String password = "password";
     private Connection connection;
     @Autowired
 
@@ -120,7 +119,6 @@ public class MainController {
 
     @PostMapping(path = "/addReview")
     public String addReview(@RequestBody Review review){
-        System.out.println(review.getDate());
         String query = "insert into reviews (reviewer, pet, description, rating, date) values (" + review.getReviewer() + ", " + review.getPet() + ", '" + review.getDescription() + "'," + review.getRating() + ", '" + review.getDate() + "')";
 
         try {

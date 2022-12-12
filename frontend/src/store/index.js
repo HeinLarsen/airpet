@@ -37,7 +37,7 @@ export default new Vuex.Store({
       console.log(data);
       var options = {
         method: 'POST',
-        url: 'http://localhost:8080/demo/addUser',
+        url: 'http://localhost:8080/UserController/addUser',
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Request-Headers': 'Content-Type, Authorization'
@@ -53,7 +53,7 @@ export default new Vuex.Store({
     async getPets(context) {
       var options = {
         method: 'GET',
-        url: 'http://localhost:8080/demo/listPets',
+        url: 'http://localhost:8080/PetController/listPets',
         headers: {
           'Content-Type': 'application/json'
         }
@@ -65,7 +65,7 @@ export default new Vuex.Store({
     async getPet(context, id) {
         var options = {
           method: 'GET',
-          url: 'http://localhost:8080/demo/getPet/' + id,
+          url: 'http://localhost:8080/PetController/getPet/' + id,
           headers: {
             'Content-Type': 'application/json'
           }

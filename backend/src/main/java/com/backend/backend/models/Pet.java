@@ -1,19 +1,18 @@
 package com.backend.backend.models;
 
 public class Pet {
-    int ID;
 
-    String name;
+    private String name;
 
     //it is a String in Breeds Table
-    int breed;
+    private int breed;
 
     // it's a String in Users Table
-    int owner;
+    private int owner;
 
-    int age;
+    private int age;
 
-    String description;
+    private String description;
 
     public Pet(String name, int breed, int owner, int age, String description) {
         this.name = name;
@@ -23,13 +22,7 @@ public class Pet {
         this.description = description;
     }
 
-    public int getID() {
-        return ID;
-    }
 
-    public void setID(int ID) {
-        this.ID = ID;
-    }
 
     public String getName() {
         return name;
@@ -70,5 +63,7 @@ public class Pet {
     public String getDescription() {
         return description;
     }
+
+
 }
 

@@ -17,11 +17,11 @@ import java.util.List;
 public class PetController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
-    private String password = "Admin1234";
+    private String password = "password";
     private Connection connection;
     @Autowired
 
-    public PetController(){
+    public PetController() {
         try
         {
             connection = DriverManager.getConnection(url, username, password);
@@ -61,9 +61,9 @@ public class PetController {
     }
 
     @GetMapping(path = "/listPets")
-    public @ResponseBody Iterable<Pet> getPets(){
-        String query = "SELECT * FROM pets";
-        ArrayList<Pet> pets = new ArrayList<>();
+    public ResponseEntity<List<PetView>> getPets(){
+        String query = "SELECT * FROM pets_view";
+        ArrayList<PetView> pets = new ArrayList<>();
         try {
             Statement statement = this.connection.createStatement();
             statement.execute(query);
@@ -75,43 +75,41 @@ public class PetController {
                 int owner = resultSet.getInt("owner");
                 int age= resultSet.getInt("age");
                 String description = resultSet.getString("description");
-
-                Pet p = new Pet(name, breed, owner, age, description);
-                p.setID(ID);
+                float rating = resultSet.getFloat("rating");
+                int ratingCount = resultSet.getInt("rating_count");
+                String ownerName = resultSet.getString("owner_name");
+                PetView p = new PetView(name, breed, owner, age, description, ID, rating, ratingCount, ownerName);
                 pets.add(p);
-            }
-            for(Pet p : pets){
-                System.out.println(p);
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return pets;
+        return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
     @GetMapping(path = "/getPet/{ID}")
-    public ResponseEntity<Pet> getPet(@PathVariable("ID") int ID){
-        String query = "SELECT * FROM pets WHERE ID =" +ID;
-        Pet p;
+    public ResponseEntity<PetView> getPet(@PathVariable("ID") int ID){
+        String query = "SELECT * FROM pets_view WHERE ID =" +ID;
+        PetView p;
 
         try {
             Statement statement = this.connection.createStatement();
             statement.execute(query);
             ResultSet resultSet = statement.getResultSet();
             if (!resultSet.isBeforeFirst() ) {
-
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No valid ID");
-
             } else {
                 while(resultSet.next()){
                     ID = resultSet.getInt("ID");
                     String name = resultSet.getString("name");
                     int breed = resultSet.getInt("breed");
                     int owner = resultSet.getInt("owner");
-                    int age = resultSet.getInt("age");
+                    int age= resultSet.getInt("age");
                     String description = resultSet.getString("description");
-                    p = new Pet(name, breed, owner, age, description);
-                    p.setID(ID);
+                    float rating = resultSet.getFloat("rating");
+                    int ratingCount = resultSet.getInt("rating_count");
+                    String ownerName = resultSet.getString("owner_name");
+                    p = new PetView(name, breed, owner, age, description, ID, rating, ratingCount, ownerName);
                     return new ResponseEntity<>(p, HttpStatus.OK);
                 }
             }
