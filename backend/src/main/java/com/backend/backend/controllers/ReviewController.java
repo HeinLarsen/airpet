@@ -47,7 +47,20 @@ public class ReviewController {
             e.printStackTrace();
         }
     }
-
+//VIRKER
+    public Review getReview(ResultSet resultSet) throws SQLException
+    {
+        Review r;
+        int ID = resultSet.getInt("ID");
+        int reviewer = resultSet.getInt("reviewer");
+        int pet = resultSet.getInt("pet");
+        String description = resultSet.getString("description");
+        float rating = resultSet.getFloat("rating");
+        String date = resultSet.getString("date");
+        r = new Review(reviewer, pet, description, rating, date);
+        return r;
+    }
+//VIRKER
     @PostMapping(path = "/addReview")
     public String addReview(@RequestBody Review review){
         String query = "insert into reviews (reviewer, pet, description, rating, date) values (" + review.getReviewer() + ", " + review.getPet() + ", '" + review.getDescription() + "'," + review.getRating() + ", '" + review.getDate() + "')";
@@ -61,13 +74,10 @@ public class ReviewController {
 
         return "adding review";
     }
-
+//VIRKER
     @GetMapping(path = "/getReviews/{id}")
     public ResponseEntity<List<Review>> getReviews(@PathVariable("id") int id) {
-        String query = "select reviews.*, concat(users.first_name, ' ', users.last_name) as fullName " +
-                "from reviews " +
-                "inner join users on reviews.reviewer = users.ID " +
-                "where reviews.pet =" + id;
+        String query = "select * from reviews_view where ID="+id;
         List<Review> reviews = new ArrayList<Review>();
 
         try {
@@ -78,23 +88,12 @@ public class ReviewController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No valid ID");
             } else {
                 while(resultSet.next()){
-                    id = resultSet.getInt("ID");
-                    int reviewer = resultSet.getInt("reviewer");
-                    int pet = resultSet.getInt("pet");
-                    String description = resultSet.getString("description");
-                    float rating = resultSet.getFloat("rating");
-                    String date = resultSet.getString("date");
-                    String fullName = resultSet.getString("fullName");
-                    Review r = new Review(reviewer, pet, description, rating, date);
+                    Review r = getReview(resultSet);
                     r.setID(id);
-                    r.setFullName(fullName);
                     reviews.add(r);
                 }
                 return new ResponseEntity<>(reviews, HttpStatus.OK);
-
             }
-
-
         }catch (SQLException e){
             e.printStackTrace();
         }
