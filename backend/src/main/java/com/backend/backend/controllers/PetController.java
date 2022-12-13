@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,27 @@ public class PetController {
             e.printStackTrace();
         }
     }
+
+
+   /* public PetView getPet(ResultSet resultSet) throws SQLException
+    {
+        PetView p;
+        int ID = resultSet.getInt("ID");
+        String name = resultSet.getString("name");
+        int breed = resultSet.getInt("breed");
+        int owner = resultSet.getInt("owner");
+        int age = resultSet.getInt("age");
+        String description = resultSet.getString("description");
+        float rating = resultSet.getFloat("rating");
+        int ratincCount = resultSet.getInt("rating_count");
+        String ownerName = resultSet.getString("owner_name");
+         p = new PetView(name, breed, owner, age, description, ID, rating, ratincCount, ownerName);
+        return p;
+
+    }*/
+
+
+
 
     @PostMapping(path ="/addPet")
     public @ResponseBody String addNewPet(@RequestBody Pet p){
@@ -59,7 +81,7 @@ public class PetController {
         }
         return "trying to remove selected pet:" + ID;
     }
-
+//VIRKER
     @GetMapping(path = "/listPets")
     public ResponseEntity<List<PetView>> getPets(){
         String query = "SELECT * FROM pets_view";
@@ -69,6 +91,7 @@ public class PetController {
             statement.execute(query);
             ResultSet resultSet = statement.getResultSet();
             while(resultSet.next()){
+
                 int ID = resultSet.getInt("ID");
                 String name = resultSet.getString("name");
                 int breed = resultSet.getInt("breed");
@@ -82,6 +105,8 @@ public class PetController {
                 float latitude = resultSet.getFloat("latitude");
                 float longitude = resultSet.getFloat("longitude");
                 PetView p = new PetView(name, breed, species, owner, age, description, latitude, longitude, ID, rating, ratingCount, ownerName);
+
+
                 pets.add(p);
             }
         }catch (SQLException e){
@@ -89,7 +114,7 @@ public class PetController {
         }
         return new ResponseEntity<>(pets, HttpStatus.OK);
     }
-
+//VIRKER
     @GetMapping(path = "/getPet/{ID}")
     public ResponseEntity<PetView> getPet(@PathVariable("ID") int ID){
         String query = "SELECT * FROM pets_view WHERE ID =" +ID;
@@ -103,6 +128,7 @@ public class PetController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No valid ID");
             } else {
                 while(resultSet.next()){
+
                     ID = resultSet.getInt("ID");
                     String name = resultSet.getString("name");
                     int breed = resultSet.getInt("breed");
@@ -116,6 +142,8 @@ public class PetController {
                     float latitude = resultSet.getFloat("latitude");
                     float longitude = resultSet.getFloat("longitude");
                     p = new PetView(name, breed, species, owner, age, description, latitude, longitude, ID, rating, ratingCount, ownerName);
+
+
                     return new ResponseEntity<>(p, HttpStatus.OK);
                 }
             }
@@ -127,7 +155,20 @@ public class PetController {
         return null;
     }
 
+public void testersql() throws SQLException{
+        String query = "SELECT ID, start, end FROM bookings";
+        Statement statement = this.connection.createStatement();
+        statement.execute(query);
+        ResultSet resultSet = statement.getResultSet();
 
+        while(resultSet.next()){
+            int ID = resultSet.getInt("ID");
+            String start = resultSet.getString("start");
+            String end = resultSet.getString("end");
+
+        }
+
+}
 
 
 

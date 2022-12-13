@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -30,7 +29,7 @@ public class UserController {
             e.printStackTrace();
         }
     }
-
+//VIRKER
     @PostMapping(path = "/addUser")
     public @ResponseBody String addNewUser (@RequestBody Users u) {
 
@@ -47,8 +46,13 @@ public class UserController {
         return "Bing bong bam done...";
     }
 
-    @PostMapping(path = "/updateUser")
-    public @ResponseBody String removeUser(@RequestParam int ID) {
+
+
+
+//lav en update user funktion og slet removeUser
+    @PostMapping(path = "/removeUser")
+    public @ResponseBody String removeUser(@RequestParam int ID){
+
 
         String query = "DELETE FROM users WHERE ID =" + ID;
         try{
@@ -60,8 +64,24 @@ public class UserController {
         return "Trying to remove User";
     }
 
+    @PostMapping(path = "/updateUserName")
+    public @ResponseBody String updateUserName(@RequestParam String username, int ID)
+    {
+        String query = "UPDATE users SET first_name =" + username + "WHERE ID=" +ID;
 
-    public Users genUser(ResultSet resultSet) throws SQLException {
+        try{
+            Statement statement = this.connection.createStatement();
+            statement.executeUpdate(query);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return "trying to update username";
+    }
+
+
+
+
+    public Users getUser(ResultSet resultSet) throws SQLException {
         Users u;
             int ID = resultSet.getInt("ID");
             String email = resultSet.getString("email");
@@ -86,7 +106,7 @@ public class UserController {
             statement.execute(query);
             ResultSet resultSet = statement.getResultSet();
             while(resultSet.next()){
-                Users u = genUser(resultSet);
+                Users u = getUser(resultSet);
                 users.add(u);
             }
             for(Users u : users){
@@ -115,16 +135,8 @@ public class UserController {
 
             } else {
                 while(resultSet.next()){
-                    ID = resultSet.getInt("ID");
-                    String email = resultSet.getString("email");
-                    String firstName = resultSet.getString("first_name");
-                    String lastName = resultSet.getString("last_name");
-                    String password = resultSet.getString("password");
-                    String street = resultSet.getString("street");
-                    int streetNumber = resultSet.getInt("street_number");
-                    String city = resultSet.getString("city");
-                    int zip = resultSet.getInt("zip");
-                    u = new Users(email, firstName, lastName, password, street, streetNumber, city, zip);
+
+                    u = getUser(resultSet);
                     u.setId(ID);
                     return new ResponseEntity<>(u, HttpStatus.OK);
                 }

@@ -1,5 +1,7 @@
 package com.backend.backend.models;
 public class Bookings {
+        private int ID;
+
 
 
     private int pet;
@@ -9,6 +11,21 @@ public class Bookings {
     private String start;
 
     private String end;
+
+
+        private boolean isBooked;
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
+
+
+
+
 
     public Bookings(int pet, int bookee, String start, String end) {
         this.pet = pet;
