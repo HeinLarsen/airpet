@@ -7,20 +7,37 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(path="/review")
 public class ReviewController {
-    private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
-    private String username = "root";
-    private String password = "Admin1234";
+    private String url;
+    private String username;
+    private String password;
     private Connection connection;
     @Autowired
-public  ReviewController() {
+    public ReviewController() {
+        try (InputStream input = new FileInputStream("src/main/resources/application.properties")) {
+            Properties prop = new Properties();
+            // load a properties file
+            prop.load(input);
+            // get the property value and print it out
+            url = prop.getProperty("spring.datasource.url");
+            username = prop.getProperty("spring.datasource.username");
+            password = prop.getProperty("spring.datasource.password");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
         try
         {
             connection = DriverManager.getConnection(url, username, password);

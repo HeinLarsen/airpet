@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
@@ -22,6 +26,18 @@ public class BreedController {
     private Connection connection;
     @Autowired
     public BreedController() {
+        try (InputStream input = new FileInputStream("src/main/resources/application.properties")) {
+            Properties prop = new Properties();
+            // load a properties file
+            prop.load(input);
+            // get the property value and print it out
+            url = prop.getProperty("spring.datasource.url");
+            username = prop.getProperty("spring.datasource.username");
+            password = prop.getProperty("spring.datasource.password");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         try{
             connection = DriverManager.getConnection(url, username, password);
         }

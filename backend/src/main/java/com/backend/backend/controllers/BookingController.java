@@ -5,25 +5,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import org.yaml.snakeyaml.events.Event;
 
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(path="/booking")
 public class BookingController {
-    private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
-    private String username = "root";
-    private String password = "Admin1234";
+    private String url;
+    private String username;
+    private String password;
     private Connection connection;
+
     @Autowired
-public BookingController(){
+    public BookingController(){
+        try (InputStream input = new FileInputStream("src/main/resources/application.properties")) {
+            Properties prop = new Properties();
+            // load a properties file
+            prop.load(input);
+            // get the property value and print it out
+            url = prop.getProperty("spring.datasource.url");
+            username = prop.getProperty("spring.datasource.username");
+            password = prop.getProperty("spring.datasource.password");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         try
         {
             connection = DriverManager.getConnection(url, username, password);
@@ -35,46 +49,16 @@ public BookingController(){
     }
 
     @PostMapping(path = "/addBooking")
-    public String addNewBooking(@RequestBody Bookings bo) {
-        //WORK in progress
-        String query2 = "SELECT * FROM bookings";
-        try {
+    public String addNewBooking(@RequestBody Bookings bo){
+        String query = "INSERT INTO bookings(pet, bookee, start, end) VALUES (" + bo.getPet() + ", '" + bo.getBookee() + "', '" + bo.getStart() + "', '" + bo.getEnd() + "')";
+        try{
             Statement statement = this.connection.createStatement();
-            statement.execute(query2);
-            ResultSet resultSet = statement.getResultSet();
-            while (resultSet.next()) {
-                int ID = resultSet.getInt("ID");
-                int pet = resultSet.getInt("pet");
-                int bookee = resultSet.getInt("bookee");
-                String start = resultSet.getString("start");
-                String end = resultSet.getString("end");
-                Bookings b = new Bookings(pet, bookee, start, end);
-
-                        if (b.getStart() == bo.getStart()) {
-                            if (b.getEnd().equals(bo.getEnd())) {
-                                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Booking already exist");
-                            }
-                        }
-            }
-
-        } catch (SQLException e) {
+            statement.executeUpdate(query);
+        }catch(SQLException e){
             e.printStackTrace();
-
-
-            String query = "INSERT INTO bookings(pet, bookee, start, end) VALUES (" + bo.getPet() + ", '" + bo.getBookee() + "', '" + bo.getStart() + "', '" + bo.getEnd() + "')";
-            try {
-                Statement statement = this.connection.createStatement();
-                statement.executeUpdate(query);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-
         }
         return "Adding your booking now...";
     }
-
-
-
 
     @DeleteMapping(path = "/cancelBooking/{ID}")
     public @ResponseBody String cancelBooking(@PathVariable("ID") int ID)
@@ -114,10 +98,6 @@ public BookingController(){
         }
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
-
-
-
-
 
 
 
