@@ -17,7 +17,7 @@ import java.util.List;
 public class ReviewController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
-    private String password = "password";
+    private String password = "Admin1234";
     private Connection connection;
     @Autowired
 public  ReviewController() {

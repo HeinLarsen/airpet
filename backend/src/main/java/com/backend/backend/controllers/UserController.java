@@ -16,35 +16,38 @@ import java.util.Map;
 public class UserController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
-    private String password = "password";
+    private String password = "Admin1234";
     private Connection connection;
+
     @Autowired
-    public UserController(){
-        try
-        {
-            connection = DriverManager.getConnection(url, username, password);
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-//VIRKER
-    @PostMapping(path = "/addUser")
-    public @ResponseBody String addNewUser (@RequestBody Users u) {
-
-
-
-        String query = "INSERT INTO users (first_name, last_name, email, password, street, street_number, city, zip) VALUES ('" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getEmail() + "', '" + u.getPassword() + "', '" + u.getStreet() + "', " + u.getStreetNumber() + ", '" + u.getCity() + "', " + u.getZip() + ")";
+    public UserController() {
         try {
-            Statement statement = this.connection.createStatement();
-            statement.executeUpdate(query);
+            connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return "Bing bong bam done...";
     }
+
+    //VIRKER
+    @PostMapping(path = "/addUser")
+    public @ResponseBody String addNewUser(@RequestBody Users u) throws SQLException {
+       String query = "SELECT email FROM users";
+       Statement statement = this.connection.createStatement();
+       statement.execute(query);
+       ResultSet resultSet = statement.getResultSet();
+       while(resultSet.next()){
+           String email = resultSet.getString("email");
+           if(u.getEmail().equals(email)){
+               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already in use");
+           }
+       }
+       query = "INSERT INTO users(email, first_name, last_name, password, street, street_number, city, zip) VALUES ('" + u.getEmail() + "', '" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getPassword() + "', '" + u.getStreet() + "', " + u.getStreetNumber() + ", '" + u.getCity() + "', " + u.getZip() + ")";
+       statement = this.connection.createStatement();
+       statement.execute(query);
+       return "bing bom bam done";
+    }
+
+
 
 
 

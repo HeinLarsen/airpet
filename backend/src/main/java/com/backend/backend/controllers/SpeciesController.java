@@ -5,6 +5,7 @@ package com.backend.backend.controllers;
         import org.springframework.http.HttpStatus;
         import org.springframework.http.ResponseEntity;
         import org.springframework.web.bind.annotation.*;
+        import org.springframework.web.server.ResponseStatusException;
 
         import java.sql.*;
         import java.util.ArrayList;
@@ -16,7 +17,7 @@ package com.backend.backend.controllers;
 public class SpeciesController {
     private final String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private final String username = "root";
-    private final String password = "password";
+    private final String password = "Admin1234";
     private Connection connection;
 
     @Autowired
@@ -52,18 +53,7 @@ public class SpeciesController {
         return new ResponseEntity<>(species, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/addBreed")
-    public @ResponseBody String addNewBreed(@RequestBody Breeds b) {
 
-        String query = "INSERT INTO breeds(breed) VALUES ('" + b.getBreed() + "')";
-        try {
-            Statement statement = this.connection.createStatement();
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return "Adding breed...";
-    }
 
 }
 

@@ -9,7 +9,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8081")
@@ -18,7 +20,7 @@ import java.util.List;
 public class PetController {
     private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
-    private String password = "password";
+    private String password = "Admin1234";
     private Connection connection;
     @Autowired
 
@@ -35,7 +37,7 @@ public class PetController {
     }
 
 
-   /* public PetView getPet(ResultSet resultSet) throws SQLException
+    public PetView getPet(ResultSet resultSet) throws SQLException
     {
         PetView p;
         int ID = resultSet.getInt("ID");
@@ -47,17 +49,20 @@ public class PetController {
         float rating = resultSet.getFloat("rating");
         int ratincCount = resultSet.getInt("rating_count");
         String ownerName = resultSet.getString("owner_name");
-         p = new PetView(name, breed, owner, age, description, ID, rating, ratincCount, ownerName);
+        float latitude = resultSet.getFloat("latitude");
+        float longtitude = resultSet.getFloat("longitude");
+        int species = resultSet.getInt("species");
+         p = new PetView(name, breed, species, owner, age, description, latitude, longtitude, ID, rating, ratincCount, ownerName);
         return p;
 
-    }*/
+    }
 
 
 
 
     @PostMapping(path ="/addPet")
     public @ResponseBody String addNewPet(@RequestBody Pet p){
-
+    
 
         String query = "INSERT INTO pets (name, breed, species, owner, age, description, latitude, longitude) VALUES ('" + p.getName() + "', " + p.getBreed() + ", " + p.getSpecies() + ", " + p.getOwner() + ", " + p.getAge() + ", '" + p.getDescription() + "', " + p.getLatitude() + "," + p.getLongitude() + ")";
         try{
@@ -91,22 +96,7 @@ public class PetController {
             statement.execute(query);
             ResultSet resultSet = statement.getResultSet();
             while(resultSet.next()){
-
-                int ID = resultSet.getInt("ID");
-                String name = resultSet.getString("name");
-                int breed = resultSet.getInt("breed");
-                int species = resultSet.getInt("species");
-                int owner = resultSet.getInt("owner");
-                int age= resultSet.getInt("age");
-                String description = resultSet.getString("description");
-                float rating = resultSet.getFloat("rating");
-                int ratingCount = resultSet.getInt("rating_count");
-                String ownerName = resultSet.getString("owner_name");
-                float latitude = resultSet.getFloat("latitude");
-                float longitude = resultSet.getFloat("longitude");
-                PetView p = new PetView(name, breed, species, owner, age, description, latitude, longitude, ID, rating, ratingCount, ownerName);
-
-
+                PetView p = getPet(resultSet);
                 pets.add(p);
             }
         }catch (SQLException e){
@@ -128,22 +118,7 @@ public class PetController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No valid ID");
             } else {
                 while(resultSet.next()){
-
-                    ID = resultSet.getInt("ID");
-                    String name = resultSet.getString("name");
-                    int breed = resultSet.getInt("breed");
-                    int species = resultSet.getInt("species");
-                    int owner = resultSet.getInt("owner");
-                    int age= resultSet.getInt("age");
-                    String description = resultSet.getString("description");
-                    float rating = resultSet.getFloat("rating");
-                    int ratingCount = resultSet.getInt("rating_count");
-                    String ownerName = resultSet.getString("owner_name");
-                    float latitude = resultSet.getFloat("latitude");
-                    float longitude = resultSet.getFloat("longitude");
-                    p = new PetView(name, breed, species, owner, age, description, latitude, longitude, ID, rating, ratingCount, ownerName);
-
-
+                    p = getPet(resultSet);
                     return new ResponseEntity<>(p, HttpStatus.OK);
                 }
             }
@@ -155,20 +130,7 @@ public class PetController {
         return null;
     }
 
-public void testersql() throws SQLException{
-        String query = "SELECT ID, start, end FROM bookings";
-        Statement statement = this.connection.createStatement();
-        statement.execute(query);
-        ResultSet resultSet = statement.getResultSet();
 
-        while(resultSet.next()){
-            int ID = resultSet.getInt("ID");
-            String start = resultSet.getString("start");
-            String end = resultSet.getString("end");
-
-        }
-
-}
 
 
 
