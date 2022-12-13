@@ -34,7 +34,7 @@
           <v-col cols="12" md="6">
             <v-img
               class="rounded"
-              src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+              :src="'http://localhost:8080/downloadFile/' + pet.id"
             />
           </v-col>
         </v-row>
