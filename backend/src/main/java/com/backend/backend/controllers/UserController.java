@@ -49,13 +49,11 @@ public class UserController {
 //VIRKER
     @PostMapping(path = "/addUser")
     public @ResponseBody String addNewUser (@RequestBody Users u) {
-
-
-
         String query = "INSERT INTO users (first_name, last_name, email, password, street, street_number, city, zip) VALUES ('" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getEmail() + "', '" + u.getPassword() + "', '" + u.getStreet() + "', " + u.getStreetNumber() + ", '" + u.getCity() + "', " + u.getZip() + ")";
         try {
             Statement statement = this.connection.createStatement();
             statement.executeUpdate(query);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
