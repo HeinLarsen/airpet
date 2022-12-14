@@ -3,6 +3,61 @@
     <v-row>
       <v-col cols="12" md="6">
         <v-row align="stretch">
+          <v-col cols="12">
+            <v-row>
+              <v-col cols="5">
+                <v-select
+                  v-model="selectedSpecies"
+                  :items="species"
+                  item-text="species"
+                  item-value="id"
+                  attach
+                  chips
+                  label="type"
+                  solo
+                  dense
+                  prepend-icon="mdi-format-list-bulleted-type"
+                  multiple
+                  @change="getPets"
+                >
+                  <template v-slot:selection="{ item, index }">
+                    <span v-if="index < maxDisplay">
+                      <v-chip small> {{ item.species }} &nbsp; </v-chip>
+                    </span>
+                    <span v-if="index === maxDisplay" class="grey--text caption"
+                      >(+{{ selectedSpecies.length - maxDisplay }} others)</span
+                    >
+                  </template>
+                </v-select>
+              </v-col>
+              <v-col cols="7">
+                <v-select
+                  v-model="selectedBreeds"
+                  :items="breeds"
+                  item-text="breed"
+                  item-value="id"
+                  attach
+                  chips
+                  solo
+                  dense
+                  prepend-icon="mdi-dog"
+                  label="breed"
+                  multiple
+                  @change="getPets"
+                >
+                  <template v-slot:selection="{ item, index }">
+                    <span v-if="index < maxDisplay">
+                      <v-chip small> {{ item.breed }} &nbsp; </v-chip>
+                    </span>
+                    <span v-if="index === maxDisplay" class="grey--text caption"
+                      >(+{{ selectedBreeds.length - maxDisplay }} others)</span
+                    >
+                  </template>
+                </v-select>
+              </v-col>
+            </v-row>
+          </v-col>
+
           <template v-for="(p, index) in filteredPets">
             <v-slide-y-transition mode="out-in" :key="index">
               <v-col cols="6" lg="3" sm="4">
@@ -48,6 +103,7 @@
       </v-col>
       <v-col cols="12" md="6">
         <GmapMap
+          class="rounded-lg"
           style="width: 100%; height: 90vh"
           @idle="boundsChanged($event)"
           :center="center"
@@ -81,6 +137,9 @@ export default {
   name: "home",
   data() {
     return {
+      maxDisplay: 3,
+      selectedSpecies: [],
+      selectedBreeds: [],
       center: {
         lat: 55.8,
         lng: 11,
@@ -304,8 +363,29 @@ export default {
 
   mounted() {
     this.$store.dispatch("getPets");
+    this.$store.dispatch("getSpecies");
+    this.$store.dispatch("getBreeds");
   },
   methods: {
+    async getPets() {
+      var data = {
+        species: this.selectedSpecies,
+        breeds: this.selectedBreeds,
+      };
+      if (this.selectedSpecies.length == 0 && this.selectedBreeds.length == 0) {
+        var res = await this.$store.dispatch("getPets");
+      } else {
+        var res = await this.$store.dispatch("getPets", data);
+      }
+      console.log(res);
+      if (res == 200) {
+        this.boundsChanged();
+      }
+      // // delay
+      // setTimeout(() => {
+      //   this.boundsChanged();
+      // }, 1000);
+    },
     getMark() {
       return require("@/assets/logo-small-b.png");
     },
@@ -334,9 +414,54 @@ export default {
       }
       return pets;
     },
+    species() {
+      return this.$store.getters.species;
+    },
+    breeds() {
+      // return this.$store.getters.breeds;
+      var breeds = this.$store.getters.breeds;
+      var species = this.selectedSpecies;
+      var result = [];
+      if (this.selectedSpecies.length > 0) {
+        for (let i = 0; i < breeds.length; i++) {
+          if (species.includes(breeds[i].species)) {
+            result.push(breeds[i]);
+          }
+        }
+        return result;
+      } else {
+        return breeds;
+      }
+    },
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+.vue-map {
+  border-radius: 4px !important;
+}
+.v-menu__content,
+.theme--dark,
+.menuable__content__active {
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #272727;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(255, 219, 219);
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb {
+    background: #9e9e9e;
+  }
+}
 </style>

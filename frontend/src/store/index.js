@@ -119,16 +119,23 @@ export default new Vuex.Store({
         console.log(error);
       }
     },
-    async getPets(context) {
+    async getPets(context, data) {
+      var urlBuilder = 'http://localhost:8080/pet/listPets'
+      if (data) {
+        urlBuilder += '?breeds=' + data.breeds + '&species=' + data.species
+      }
       var options = {
         method: 'GET',
-        url: 'http://localhost:8080/pet/listPets',
+        url: urlBuilder,
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        data
       }
       const pets = await axios(options)
+      console.log(pets);
       context.commit('setPets', pets.data)
+      return pets.status
 
     },
     async getPet(context, id) {

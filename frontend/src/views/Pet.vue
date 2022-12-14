@@ -5,7 +5,7 @@
         <v-row>
           <v-col cols="auto">
             <h1>{{ pet.name }}</h1>
-            <i class="grey--text">{{ pet.age }} years</i>
+            <i class="grey--text">{{ pet.age }} year(s)</i>
           </v-col>
           <v-col cols="auto" class="ml-auto">
             <v-rating
@@ -261,9 +261,9 @@ export default {
       return this.$store.state.auth;
     },
     reviews() {
-      var reviews = this.$store.state.reviews;
-      reviews.sort((a, b) => (a.rating > b.rating ? -1 : 1));
-      return reviews;
+      return this.$store.state.reviews;
+      // reviews.sort((a, b) => (a.rating > b.rating ? -1 : 1));
+      // return reviews;
     },
     blockedDates() {
       var blockedDates = this.$store.state.dates;
@@ -273,6 +273,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

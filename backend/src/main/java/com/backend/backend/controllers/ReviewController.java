@@ -76,7 +76,7 @@ public class ReviewController {
 //VIRKER
     @GetMapping(path = "/getReviews/{id}")
     public ResponseEntity<List<Review>> getReviews(@PathVariable("id") int id) {
-        String query = "select * from reviews_view where ID="+id;
+        String query = "select * from reviews_view where pet = "+id;
         List<Review> reviews = new ArrayList<Review>();
 
         try {

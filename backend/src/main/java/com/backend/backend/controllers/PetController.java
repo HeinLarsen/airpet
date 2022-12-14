@@ -115,8 +115,37 @@ public class PetController {
     }
 //VIRKER
     @GetMapping(path = "/listPets")
-    public ResponseEntity<List<PetView>> getPets(){
+    public ResponseEntity<List<PetView>> getPets(@RequestParam(required = false) int[] species, @RequestParam(required = false) int[] breeds ){
         String query = "SELECT * FROM pets_view";
+        if (species != null || breeds != null) {
+           query += " WHERE ";
+
+        if (species.length > 0 && species != null) {
+            query += "species in (";
+            for (int i = 0; i < species.length; i++) {
+                query += species[i];
+                if (i != species.length - 1)
+                {
+                    query += ", ";
+                }
+            }
+            query += ")";
+        }
+
+        if (breeds != null && breeds.length > 0) {
+            if (species.length > 0 && species != null ) {
+                query += " AND ";
+            }
+            query += "breed in (";
+            for (int i = 0; i < breeds.length; i++) {
+                query += breeds[i];
+                if (i != breeds.length - 1) {
+                    query += ", ";
+                }
+            }
+            query += ")";
+        }
+        }
         ArrayList<PetView> pets = new ArrayList<>();
         try {
             Statement statement = this.connection.createStatement();
@@ -156,10 +185,6 @@ public class PetController {
         }
         return null;
     }
-
-
-
-}
 
 
 

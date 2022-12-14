@@ -17,15 +17,15 @@
         </template>
         <template v-else>
           <v-hover v-slot="{ hover }">
-            <v-btn to="/bookings" text :color="hover ? 'blue accent-2' : 'white'"> my bookings
+            <v-btn to="/bookings" text :color="hover ? 'blue accent-2' : 'grey'"> my bookings
           </v-btn>
           </v-hover>
           <v-hover v-slot="{ hover }">
-            <v-btn to="/addPet" text :color="hover ? 'green accent-3' : 'white'"> add pet </v-btn>
+            <v-btn to="/addPet" text :color="hover ? 'green accent-3' : 'grey'"> add pet </v-btn>
           </v-hover>
 
           <v-hover v-slot="{ hover }">
-            <v-btn to="/profile" text :color="hover ? 'blue accent-2' : 'white'"> profile
+            <v-btn to="/profile" text :color="hover ? 'blue accent-2' : 'grey'"> profile
           </v-btn>
           </v-hover>
 
@@ -64,6 +64,5 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-</style>
+
 
