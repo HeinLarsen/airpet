@@ -22,8 +22,9 @@ public class UserController {
     private String username;
     private String password;
     private Connection connection;
+
     @Autowired
-    public UserController(){
+    public UserController() {
         try (InputStream input = new FileInputStream("src/main/resources/application.properties")) {
             Properties prop = new Properties();
             // load a properties file
@@ -37,8 +38,7 @@ public class UserController {
             ex.printStackTrace();
         }
 
-        try
-        {
+        try {
             connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,113 +48,105 @@ public class UserController {
     //VIRKER
     @PostMapping(path = "/addUser")
     public @ResponseBody String addNewUser(@RequestBody Users u) throws SQLException {
-       String query = "SELECT email FROM users";
-       Statement statement = this.connection.createStatement();
-       statement.execute(query);
-       ResultSet resultSet = statement.getResultSet();
-       while(resultSet.next()){
-           String email = resultSet.getString("email");
-           if(u.getEmail().equals(email)){
-               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already in use");
-           }
-       }
-       query = "INSERT INTO users(email, first_name, last_name, password, street, street_number, city, zip) VALUES ('" + u.getEmail() + "', '" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getPassword() + "', '" + u.getStreet() + "', " + u.getStreetNumber() + ", '" + u.getCity() + "', " + u.getZip() + ")";
-       statement = this.connection.createStatement();
-       statement.execute(query);
-       return "bing bom bam done";
+        String query = "SELECT email FROM users";
+        Statement statement = this.connection.createStatement();
+        statement.execute(query);
+        ResultSet resultSet = statement.getResultSet();
+        while (resultSet.next()) {
+            String email = resultSet.getString("email");
+            if (u.getEmail().equals(email)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
+            }
+        }
+        query = "INSERT INTO users(email, first_name, last_name, password, street, street_number, city, zip) VALUES ('" + u.getEmail() + "', '" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getPassword() + "', '" + u.getStreet() + "', " + u.getStreetNumber() + ", '" + u.getCity() + "', " + u.getZip() + ")";
+        statement = this.connection.createStatement();
+        statement.execute(query);
+        return "bing bom bam done";
     }
 
 
-
-
-
-
-//lav en update user funktion og slet removeUser
+    //lav en update user funktion og slet removeUser
     @PostMapping(path = "/removeUser")
-    public @ResponseBody String removeUser(@RequestParam int ID){
+    public @ResponseBody String removeUser(@RequestParam int ID) {
 
 
         String query = "DELETE FROM users WHERE ID =" + ID;
-        try{
+        try {
             Statement statement = this.connection.createStatement();
             statement.executeUpdate(query);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return "Trying to remove User";
     }
 
     @PostMapping(path = "/updateUserName")
-    public @ResponseBody String updateUserName(@RequestParam String username, int ID)
-    {
-        String query = "UPDATE users SET first_name =" + username + "WHERE ID=" +ID;
+    public @ResponseBody String updateUserName(@RequestParam String username, int ID) {
+        String query = "UPDATE users SET first_name =" + username + "WHERE ID=" + ID;
 
-        try{
+        try {
             Statement statement = this.connection.createStatement();
             statement.executeUpdate(query);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return "trying to update username";
     }
 
 
-
-
     public Users getUser(ResultSet resultSet) throws SQLException {
         Users u;
-            int ID = resultSet.getInt("ID");
-            String email = resultSet.getString("email");
-            String firstName = resultSet.getString("first_name");
-            String lastName = resultSet.getString("last_name");
-            String password = resultSet.getString("password");
-            String street = resultSet.getString("street");
-            int streetNumber = resultSet.getInt("street_number");
-            String city = resultSet.getString("city");
-            int zip = resultSet.getInt("zip");
-            u = new Users(email, firstName, lastName, password, street, streetNumber, city, zip);
-            u.setId(ID);
+        int ID = resultSet.getInt("ID");
+        String email = resultSet.getString("email");
+        String firstName = resultSet.getString("first_name");
+        String lastName = resultSet.getString("last_name");
+        String password = resultSet.getString("password");
+        String street = resultSet.getString("street");
+        int streetNumber = resultSet.getInt("street_number");
+        String city = resultSet.getString("city");
+        int zip = resultSet.getInt("zip");
+        u = new Users(email, firstName, lastName, password, street, streetNumber, city, zip);
+        u.setId(ID);
         return u;
     }
 
     @GetMapping(path = "/listUsers")
-    public @ResponseBody Iterable<Users> getAllUsers(){
+    public @ResponseBody Iterable<Users> getAllUsers() {
         String query = "SELECT * FROM users";
         ArrayList<Users> users = new ArrayList<>();
         try {
             Statement statement = this.connection.createStatement();
             statement.execute(query);
             ResultSet resultSet = statement.getResultSet();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 Users u = getUser(resultSet);
                 users.add(u);
             }
-            for(Users u : users){
+            for (Users u : users) {
                 System.out.println(u);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return users;
     }
 
 
-
     @GetMapping(path = "/getUser/{ID}")
-    public ResponseEntity<Users> getUser(@PathVariable("ID") int ID){
-        String query = "SELECT * FROM users WHERE ID =" +ID;
+    public ResponseEntity<Users> getUser(@PathVariable("ID") int ID) {
+        String query = "SELECT * FROM users WHERE ID =" + ID;
         Users u;
 
         try {
             Statement statement = this.connection.createStatement();
             statement.execute(query);
             ResultSet resultSet = statement.getResultSet();
-            if (!resultSet.isBeforeFirst() ) {
+            if (!resultSet.isBeforeFirst()) {
 
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No valid ID");
 
             } else {
-                while(resultSet.next()){
+                while (resultSet.next()) {
 
                     u = getUser(resultSet);
                     u.setId(ID);
@@ -163,7 +155,7 @@ public class UserController {
             }
 
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -172,14 +164,14 @@ public class UserController {
 
     @PostMapping(path = "/login")
     public ResponseEntity<Users> login(@RequestBody Map<String, String> data) {
-        String query = ("SELECT * FROM users WHERE email = '"+data.get("email")+"' AND password = '"+data.get("password")+"'");
+        String query = ("SELECT * FROM users WHERE email = '" + data.get("email") + "' AND password = '" + data.get("password") + "'");
         Users u;
         try {
             Statement statement = this.connection.createStatement();
             statement.execute(query);
             ResultSet resultSet = statement.getResultSet();
 
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 int ID = resultSet.getInt("ID");
                 String email = resultSet.getString("email");
                 String password = resultSet.getString("password");
@@ -199,6 +191,35 @@ public class UserController {
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+//VIRKER
+    @PostMapping(path = "/resetPassword/{newPassword}/{email}")
+    public ResponseEntity<String> resetPassword(@PathVariable("newPassword")String password, @PathVariable("email")String email) {
+
+        Users u;
+        try {
+            String query= "SELECT * FROM users";
+            Statement statement = this.connection.createStatement();
+            statement.execute(query);
+            ResultSet resultSet = statement.getResultSet();
+            while (resultSet.next()) {
+                String mail = resultSet.getString("email");
+                if (email.equals(mail)) {
+                    query = "UPDATE users SET password = '" + password + "' WHERE email= '" + email + "'";
+                    statement = this.connection.createStatement();
+                    statement.executeUpdate(query);
+                    return new ResponseEntity<>("password changed", HttpStatus.OK);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
+    }
 
 
 }
+
+
+
+
+
