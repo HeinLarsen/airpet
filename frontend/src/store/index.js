@@ -125,16 +125,16 @@ export default new Vuex.Store({
 
     },
     async getPet(context, id) {
-        var options = {
-          method: 'GET',
-          url: 'http://localhost:8080/pet/getPet/' + id,
-          headers: {
-            'Content-Type': 'application/json'
-          }
+      var options = {
+        method: 'GET',
+        url: 'http://localhost:8080/pet/getPet/' + id,
+        headers: {
+          'Content-Type': 'application/json'
         }
-        const pet = await axios(options)
-        console.log(pet);
-        context.commit('setPet', pet.data)
+      }
+      const pet = await axios(options)
+      console.log(pet);
+      context.commit('setPet', pet.data)
     },
     async getReviews(context, id) {
       var options = {
@@ -239,12 +239,22 @@ export default new Vuex.Store({
         data: data
       }
       try {
-        await axios(options)
+        var res = await axios(options)
+        console.log(res);
+        return res.data;
       }
       catch (error) {
         console.log(error);
       }
-
+    },
+    async uploadImage(context, data) {
+      var formData = new FormData();
+      formData.append('file', data)
+      axios.post('http://localhost:8080/uploadFile', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+    })
     }
   },
   modules: {

@@ -77,17 +77,28 @@ public class PetController {
 
 
     @PostMapping(path ="/addPet")
-    public @ResponseBody String addNewPet(@RequestBody Pet p){
-    
-
+    public @ResponseBody int addNewPet(@RequestBody Pet p){
         String query = "INSERT INTO pets (name, breed, species, owner, age, description, latitude, longitude) VALUES ('" + p.getName() + "', " + p.getBreed() + ", " + p.getSpecies() + ", " + p.getOwner() + ", " + p.getAge() + ", '" + p.getDescription() + "', " + p.getLatitude() + "," + p.getLongitude() + ")";
+        int id;
         try{
             Statement statement = this.connection.createStatement();
-            statement.executeUpdate(query);
+            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    id = generatedKeys.getInt(1);
+                    System.out.println(id);
+                    return id;
+                }
+                else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
+
         }catch (SQLException e) {
             e.printStackTrace();
         }
-        return "trying to add pets... check run tab";
+        return -1;
     }
 
     @PostMapping(path = "/removePet")
@@ -146,7 +157,20 @@ public class PetController {
         return null;
     }
 
+public void testersql() throws SQLException{
+        String query = "SELECT ID, start, end FROM bookings";
+        Statement statement = this.connection.createStatement();
+        statement.execute(query);
+        ResultSet resultSet = statement.getResultSet();
 
+        while(resultSet.next()){
+            int ID = resultSet.getInt("ID");
+            String start = resultSet.getString("start");
+            String end = resultSet.getString("end");
+
+        }
+
+}
 
 
 
