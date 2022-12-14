@@ -20,9 +20,9 @@ import java.util.Properties;
 @RestController
 @RequestMapping(path="/breed")
 public class BreedController {
-    private String url = "jdbc:mysql://localhost/airpets?" + "autoReconnect=true&useSSL=false";
-    private String username = "root";
-    private String password = "Admin1234";
+    private String url;
+    private String username;
+    private String password;
     private Connection connection;
     @Autowired
     public BreedController() {

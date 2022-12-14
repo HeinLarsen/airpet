@@ -47,7 +47,7 @@ public class BookingController {
             e.printStackTrace();
         }
     }
-
+// tilføj funktionalitet så man ikke kan lave bookings der overlapper
     @PostMapping(path = "/addBooking")
     public String addNewBooking(@RequestBody Bookings bo){
         String query = "INSERT INTO bookings(pet, bookee, start, end) VALUES (" + bo.getPet() + ", '" + bo.getBookee() + "', '" + bo.getStart() + "', '" + bo.getEnd() + "')";
