@@ -104,10 +104,11 @@
       <v-col cols="12" md="6">
         <GmapMap
           class="rounded-lg"
-          style="width: 100%; height: 90vh"
+          style="width: 100%; height: 90vh; position: sticky; top: 62px;"
           @idle="boundsChanged($event)"
           :center="center"
           :zoom="zoom"
+          
           :options="mapStyle"
           ref="mapRef"
         >
@@ -147,6 +148,7 @@ export default {
       zoom: 7,
       filteredPets: {},
       mapStyle: {
+        gestureHandling: 'greedy',
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControlOptions: { position: 3 },
