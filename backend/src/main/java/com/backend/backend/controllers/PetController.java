@@ -157,18 +157,7 @@ public class PetController {
         return null;
     }
 
-public void testersql() throws SQLException{
-        String query = "SELECT ID, start, end FROM bookings";
-        Statement statement = this.connection.createStatement();
-        statement.execute(query);
-        ResultSet resultSet = statement.getResultSet();
 
-        while(resultSet.next()){
-            int ID = resultSet.getInt("ID");
-            String start = resultSet.getString("start");
-            String end = resultSet.getString("end");
-
-        }
 
 }
 
