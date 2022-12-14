@@ -11,6 +11,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -98,7 +101,34 @@ public class BookingController {
         }
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
+    @GetMapping(path = "/listBooking/{ID}")
+public ResponseEntity<ArrayList> checkBooking(@PathVariable("ID") int ID) throws SQLException{
 
+    String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+
+        String query = "SELECT start, end FROM bookings WHERE pet = " + ID + " AND start >= '" + date + "' ";
+        Statement statement = this.connection.createStatement();
+        statement.execute(query);
+        ResultSet resultSet = statement.getResultSet();
+        ArrayList<String> bookingDates = new ArrayList<>();
+        while(resultSet.next())
+        {
+
+            String start = resultSet.getString("start");
+            String end = resultSet.getString("end");
+            LocalDate startDate = LocalDate.parse(start);
+            LocalDate endDate = LocalDate.parse(end);
+            while(!startDate.isAfter(endDate))
+            {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                System.out.println(startDate);
+                bookingDates.add(startDate.format(formatter));
+                startDate = startDate.plusDays(1);
+            }
+            }
+        return new ResponseEntity<>(bookingDates, HttpStatus.OK);
+}
 
 
 }
