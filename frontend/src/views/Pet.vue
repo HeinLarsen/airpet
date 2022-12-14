@@ -41,7 +41,7 @@
         <v-row>
           <v-col cols="6">
             <v-row>
-              <v-col cols="12">
+              <v-col cols="12" v-if="auth">
                 <v-card>
                   <v-card-title>
                     <div class="grey--text mr-auto">Write a review!</div>
@@ -109,7 +109,7 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="6" v-if="auth">
             <v-card>
               <v-card-title class="grey--text"
                 >Book a day with {{ pet.name }}</v-card-title
@@ -256,6 +256,9 @@ export default {
   computed: {
     pet() {
       return this.$store.state.pet;
+    },
+    auth() {
+      return this.$store.state.auth;
     },
     reviews() {
       var reviews = this.$store.state.reviews;
