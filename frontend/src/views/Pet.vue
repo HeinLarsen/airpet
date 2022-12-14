@@ -136,6 +136,7 @@
                   <v-date-picker
                     v-model="date"
                     :min="currentDate"
+                    :allowed-dates="allowedDates"
                     no-title
                     scrollable
                   >
@@ -169,6 +170,7 @@
                   <v-date-picker
                     v-model="date2"
                     :min="date"
+                    :allowed-dates="allowedDates"
                     no-title
                     scrollable
                   >
@@ -208,6 +210,7 @@ export default {
   name: "pet",
   data() {
     return {
+      el: [],
       currentDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),
@@ -232,8 +235,12 @@ export default {
   mounted() {
     this.$store.dispatch("getPet", this.$route.params.id);
     this.$store.dispatch("getReviews", this.$route.params.id);
+    this.$store.dispatch("getDates", this.$route.params.id);
   },
   methods: {
+    allowedDates(val) {
+      return !this.blockedDates.includes(val);
+    },
     submitReview() {
       this.$store.dispatch("createReview", this.review);
     },
@@ -255,6 +262,11 @@ export default {
       reviews.sort((a, b) => (a.rating > b.rating ? -1 : 1));
       return reviews;
     },
+    blockedDates() {
+      var blockedDates = this.$store.state.dates;
+      this.el = blockedDates;
+      return blockedDates;
+    }
   },
 };
 </script>

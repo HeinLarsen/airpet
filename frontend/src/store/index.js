@@ -13,6 +13,7 @@ export default new Vuex.Store({
     pets: [],
     reviews: [],
     bookings: [],
+    dates: [],
     species: [],
     breeds: [],
   },
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     },
     bookings(state) {
       return state.bookings
+    },
+    dates(state) {
+      return state.dates
     },
     species(state) {
       return state.species
@@ -54,6 +58,9 @@ export default new Vuex.Store({
     },
     setBookings(state, bookings) {
       state.bookings = bookings
+    },
+    setDates(state, dates) {
+      state.dates = dates
     },
     setSpecies(state, species) {
       state.species = species
@@ -190,6 +197,17 @@ export default new Vuex.Store({
       }
       const bookings = await axios(options)
       context.commit('setBookings', bookings.data)
+    },
+    async getDates(context, id) {
+      var options = {
+        method: 'GET',
+        url: 'http://localhost:8080/booking/listBooking/' + id,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      let dates = await axios(options)
+      context.commit('setDates', dates.data)
     },
     async cancelBooking(context, id) {
       var options = {
