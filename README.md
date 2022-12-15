@@ -218,23 +218,6 @@ values
     (1, 1, "2022-10-09", "2022-10-12"),
     (3, 1, "2022-11-23", "2022-11-24"),
     (2, 1, "2022-12-01", "2022-12-15");
-create database if not exists airpets;
-USE airpets;
-    ("Tom", 2, 8, 2, 7, "Sleeps a lot", 56.06122627940592, 12.775782443892037),
-    ("Luna", 1, 4, 2, 12, "half blind", 55.7806875689101, 12.523890643227794),
-    ("Simba", 1, 4, 9, 9, "obidient", 55.91304, 12.485486),
-    ("Nala", 2, 9, 4, 4, "may scratch a lille bit", 55.5487, 12.0239),
-    ("Jimmy", 4, 3, 5, 20, "Just feed him rats", 55.2324811, 11.740828),
-    ("Laudrup", 3, 11, 6, 2, "likes grass, hates hawks", 54.863136291503906, 12.019526481628418),
-    ("Kylian", 1, 5, 7, 5, "howls all night long, a real goofball", 54.85551071166992, 11.164922714233398),
-    ("Vader", 2, 7, 8, 12, "Dark like Darth Vader", 55.0720329284668, 10.585433006286621);
+
     
-insert ignore into bookings
-    (pet, bookee, start, end)
-values
-    (1, 1, "2022-10-09", "2022-10-12"),
-    (3, 1, "2022-11-23", "2022-11-24"),
-    (2, 1, "2022-12-01", "2022-12-15");
-create database if not exists airpets;
-USE airpets;
  ```
