@@ -71,7 +71,7 @@ public class BreedController {
     }
 
     @PostMapping(path = "/addBreed")
-    public @ResponseBody String addNewBreed(@RequestBody Breeds b) throws SQLException {
+    public ResponseEntity<String>  addNewBreed(@RequestBody Breeds b) throws SQLException {
         String query = "SELECT breed FROM breeds";
         Statement statement = this.connection.createStatement();
         statement.execute(query);
@@ -79,7 +79,7 @@ public class BreedController {
         while(resultSet.next()){
             String breed = resultSet.getString("breed");
             if(b.getBreed().equals(breed)){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "breed already exists");
+                return new  ResponseEntity<>("breed already exists", HttpStatus.IM_USED);
             }
         }
 
@@ -90,7 +90,7 @@ public class BreedController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "Your breed has been added";
+        return new ResponseEntity<>("Your breed has been added", HttpStatus.OK);
     }
 
 }

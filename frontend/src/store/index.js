@@ -160,7 +160,8 @@ export default new Vuex.Store({
           'Content-Type': 'application/json'
         }
       }
-      const reviews = await axios(options)
+      let reviews = await axios(options)
+      console.log(reviews);
       context.commit('setReviews', reviews.data)
     },
     async createReview(context, data) {

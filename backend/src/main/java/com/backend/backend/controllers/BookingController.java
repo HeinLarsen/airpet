@@ -53,7 +53,7 @@ public class BookingController {
     }
 // tilføj funktionalitet så man ikke kan lave bookings der overlapper -> tjek
     @PostMapping(path = "/addBooking")
-    public String addNewBooking(@RequestBody Bookings bo) throws SQLException{
+    public ResponseEntity<String> addNewBooking(@RequestBody Bookings bo) throws SQLException{
         String getDates = "SELECT * FROM bookings";
         System.out.println(getDates);
         Statement statement2 = this.connection.createStatement();
@@ -64,7 +64,7 @@ public class BookingController {
             String endDate = resultSet.getString("end");
 
             if(bo.getStart().equals(startDate) && bo.getEnd().equals(endDate) || bo.getStart().equals(startDate) || bo.getEnd().equals(endDate)){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A booking already exists for this date range");
+                return new ResponseEntity<>("a booking already exists in this range", HttpStatus.IM_USED);
             }
         }
 
@@ -76,7 +76,7 @@ public class BookingController {
         }catch(SQLException e){
             e.printStackTrace();
         }
-        return "Adding your booking now...";
+        return new ResponseEntity<>("Booking added", HttpStatus.OK);
     }
     // -> tjek
     @DeleteMapping(path = "/cancelBooking/{ID}")

@@ -71,7 +71,7 @@ public class ReviewController {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<>("Review submitted", HttpStatus.OK);
+        return new ResponseEntity<>("adding review", HttpStatus.OK);
     }
 //VIRKER
     @GetMapping(path = "/getReviews/{id}")
@@ -84,7 +84,7 @@ public class ReviewController {
             statement.execute(query);
             ResultSet resultSet = statement.getResultSet();
             if (!resultSet.isBeforeFirst() ) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No valid ID");
+                return new ResponseEntity<>(reviews, HttpStatus.OK);
             } else {
                 while(resultSet.next()){
                     Review r = getReview(resultSet);

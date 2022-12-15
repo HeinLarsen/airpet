@@ -25,11 +25,6 @@
           </v-hover>
 
           <v-hover v-slot="{ hover }">
-            <v-btn to="/profile" text :color="hover ? 'blue accent-2' : 'grey'"> profile
-          </v-btn>
-          </v-hover>
-
-          <v-hover v-slot="{ hover }">
             <v-btn @click="logout" icon>
             <v-icon :color="hover ? 'red accent-3' : 'grey'">mdi-logout</v-icon>
           </v-btn>

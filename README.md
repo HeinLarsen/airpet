@@ -22,6 +22,9 @@ Start the frontend with npm run serve
 
 wip db query for tables, views and data - does not include pictures
 ```sql
+create database if not exists airpets;
+USE airpets;
+
 create table if not exists users (
     ID int NOT NULL AUTO_INCREMENT,
     email varchar(255),
@@ -108,7 +111,10 @@ values
     ("Johnny@yahoo.com", "Johnny", "Abraham", "password", "Nykøbingvej", 85, "Stubbekøbing", 4850),
     ("JesseVillagrana@gmail.com", "Jesse", "Villagrana", "password", "Maribovej", 245, "Nakskov", 4900),
     ("ArgusSewell@yahoo.com", "Argus", "Sewell", "password", "Lundtoftevej", 20, "Svendborg", 5700),
-    ("Maria@Gmail.com", "Maria", "Brandt", "password", "Græsager", 402, "Kokkedal", 2980);
+    ("Maria@Gmail.com", "Maria", "Brandt", "password", "Græsager", 402, "Kokkedal", 2980),
+    ("PeterFalktoft@gmail.com", "Peter", "Falktoft", "hergaardetgodt", "Multivej", 16, "Århus C", 8000),
+    ("EsbenBjerre@live.dk", "Esben", "Bjerre", "EsbenEllerEj", "Vermundsgade", 9, "København Ø", 2100),
+    ("Xiaoxuan@gmail.com", "Xiaoxuan", "Huang Olsen", "password", "Syrenvej", 9, "Hørsholm", 2970);
 
 insert ignore into species
     (species)
@@ -123,10 +129,13 @@ values
     (1, "Daschhound"),
     (1, "Labrador"),
     (1, "Siberian Husky"),
+    (1, "Boxer"),
+    (1, "Cane Corso"),
     (2, "Maine Coon"),
     (2, "Ragdoll"),
     (2, "Siamese"),
     (2, "Burmesse"),
+    (2, "three coloured house cat"),
     (4, "Python"),
     (3, "Lionhead");
 
@@ -142,7 +151,11 @@ values
     ("Jimmy", 4, 3, 5, 20, "Just feed him rats", 55.2324811, 11.740828),
     ("Laudrup", 3, 11, 6, 2, "likes grass, hates hawks", 54.863136291503906, 12.019526481628418),
     ("Kylian", 1, 5, 7, 5, "howls all night long, a real goofball", 54.85551071166992, 11.164922714233398),
-    ("Vader", 2, 7, 8, 12, "Dark like Darth Vader", 55.0720329284668, 10.585433006286621);
+    ("Vader", 2, 7, 8, 12, "Dark like Darth Vader", 55.0720329284668, 10.585433006286621),
+    ("Rihanna", 1, 6, 10, 8, "a real pop-dog", 56.14143371582031, 10.21992301940918),
+    ("Britney", 1, 7, 11, 4, "quite exclusive dogbreed", 55.70567321777344, 12.553417205810547),
+    ("Bling", 2, 12, 12, 2, "Yes it is actually a cat breed. She normally sleeps at day and totally gets crazy at the night. A princess, dont like dirt, want everywhere clean", 55.886791017888484, 12.49889130439863);
+    
     
 insert ignore into bookings
     (pet, bookee, start, end)
@@ -150,6 +163,7 @@ values
     (1, 1, "2022-10-09", "2022-10-12"),
     (3, 1, "2022-11-23", "2022-11-24"),
     (2, 1, "2022-12-01", "2022-12-15");
-create database if not exists airpets;
-USE airpets;
+
+
+    
  ```
