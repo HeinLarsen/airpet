@@ -3,11 +3,8 @@ package com.backend.backend.models;
 import java.time.LocalDate;
 
 public class Review {
-    private int ID;
 
     private int reviewer;
-
-    private String fullName;
 
     private int pet;
 
@@ -24,14 +21,6 @@ public class Review {
         this.description = description;
         this.rating = rating;
         this.date = date;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
     }
 
     public int getReviewer() {
@@ -74,11 +63,4 @@ public class Review {
         this.date = date;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 }

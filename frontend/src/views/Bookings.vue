@@ -2,7 +2,7 @@
   <v-container>
     <v-row >
       <template v-for="(b, index) in bookings">
-        <v-col cols="4" :key="index" >
+        <v-col md="6" lg="4" :key="index" >
           <v-card
               dark
             >

@@ -47,16 +47,17 @@ public class ReviewController {
         }
     }
 //VIRKER
-    public Review getReview(ResultSet resultSet) throws SQLException
+    public ReviewView getReview(ResultSet resultSet) throws SQLException
     {
-        Review r;
+        ReviewView r;
         int ID = resultSet.getInt("ID");
         int reviewer = resultSet.getInt("reviewer");
         int pet = resultSet.getInt("pet");
         String description = resultSet.getString("description");
         float rating = resultSet.getFloat("rating");
         String date = resultSet.getString("date");
-        r = new Review(reviewer, pet, description, rating, date);
+        String fullName = resultSet.getString("full_name");
+        r = new ReviewView(reviewer, pet, description, rating, date, ID, fullName);
         return r;
     }
 //VIRKER
@@ -75,9 +76,9 @@ public class ReviewController {
     }
 //VIRKER
     @GetMapping(path = "/getReviews/{id}")
-    public ResponseEntity<List<Review>> getReviews(@PathVariable("id") int id) {
+    public ResponseEntity<List<ReviewView>> getReviews(@PathVariable("id") int id) {
         String query = "select * from reviews_view where pet = "+id;
-        List<Review> reviews = new ArrayList<Review>();
+        List<ReviewView> reviews = new ArrayList<>();
 
         try {
             Statement statement = this.connection.createStatement();
@@ -87,8 +88,7 @@ public class ReviewController {
                 return new ResponseEntity<>(reviews, HttpStatus.OK);
             } else {
                 while(resultSet.next()){
-                    Review r = getReview(resultSet);
-                    r.setID(id);
+                    ReviewView r = getReview(resultSet);
                     reviews.add(r);
                 }
                 return new ResponseEntity<>(reviews, HttpStatus.OK);

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col cols="8">
+      <v-col cols="12" lg="8">
         <v-row>
           <v-col cols="auto">
             <h1>{{ pet.name }}</h1>
@@ -39,77 +39,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6">
-            <v-row>
-              <v-col cols="12" v-if="auth">
-                <v-card>
-                  <v-card-title>
-                    <div class="grey--text mr-auto">Write a review!</div>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-textarea
-                      rows="3"
-                      class="mb-2"
-                      outlined
-                      v-model="review.description"
-                    >
-                    </v-textarea>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-rating
-                      background-color="grey darken-3"
-                      color="red"
-                      full-icon="mdi-heart"
-                      half-icon="mdi-heart-half-full"
-                      empty-icon="mdi-heart-outline"
-                      v-model="review.rating"
-                      dense
-                      hover
-                      half-increments
-                      size="24"
-                    ></v-rating>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      class="green--text text--accent-3"
-                      outlined
-                      @click="submitReview"
-                    >
-                      Submit
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-col>
-              <v-col cols="12">
-                <template v-for="(r, index) in reviews">
-                  <v-card :key="index" class="mb-5">
-                    <v-card-title>
-                      <div class="grey--text mr-auto">{{ r.fullName }}</div>
-                      <v-rating
-                        :value="r.rating"
-                        background-color="grey darken-3"
-                        color="red"
-                        full-icon="mdi-heart"
-                        half-icon="mdi-heart-half-full"
-                        empty-icon="mdi-heart-outline"
-                        dense
-                        half-increments
-                        readonly
-                        size="18"
-                      ></v-rating>
-                      <div class="grey--text ms-1">{{ r.rating }}</div>
-                    </v-card-title>
-                    <v-card-subtitle>
-                      {{ r.date }}
-                    </v-card-subtitle>
-                    <v-card-text>
-                      <div>{{ r.description }}</div>
-                    </v-card-text>
-                  </v-card>
-                </template>
-              </v-col>
-            </v-row>
-          </v-col>
-          <v-col cols="6" v-if="auth">
+          <v-col cols="12" lg="6" order-lg="2" v-if="auth">
             <v-card>
               <v-card-title class="grey--text"
                 >Book a day with {{ pet.name }}</v-card-title
@@ -198,6 +128,76 @@
                 </v-btn>
               </v-card-actions>
             </v-card>
+          </v-col>
+          <v-col cols="12" lg="6" order-lg="1">
+            <v-row>
+              <v-col cols="12" v-if="auth">
+                <v-card>
+                  <v-card-title>
+                    <div class="grey--text mr-auto">Write a review!</div>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-textarea
+                      rows="3"
+                      class="mb-2"
+                      outlined
+                      v-model="review.description"
+                    >
+                    </v-textarea>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-rating
+                      background-color="grey darken-3"
+                      color="red"
+                      full-icon="mdi-heart"
+                      half-icon="mdi-heart-half-full"
+                      empty-icon="mdi-heart-outline"
+                      v-model="review.rating"
+                      dense
+                      hover
+                      half-increments
+                      size="24"
+                    ></v-rating>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      class="green--text text--accent-3"
+                      outlined
+                      @click="submitReview"
+                    >
+                      Submit
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+              <v-col cols="12">
+                <template v-for="(r, index) in reviews">
+                  <v-card :key="index" class="mb-5">
+                    <v-card-title>
+                      <div class="grey--text mr-auto">{{ r.fullName }}</div>
+                      <v-rating
+                        :value="r.rating"
+                        background-color="grey darken-3"
+                        color="red"
+                        full-icon="mdi-heart"
+                        half-icon="mdi-heart-half-full"
+                        empty-icon="mdi-heart-outline"
+                        dense
+                        half-increments
+                        readonly
+                        size="18"
+                      ></v-rating>
+                      <div class="grey--text ms-1">{{ r.rating }}</div>
+                    </v-card-title>
+                    <v-card-subtitle>
+                      {{ r.date }}
+                    </v-card-subtitle>
+                    <v-card-text>
+                      <div>{{ r.description }}</div>
+                    </v-card-text>
+                  </v-card>
+                </template>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-col>

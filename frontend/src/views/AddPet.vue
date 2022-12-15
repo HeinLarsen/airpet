@@ -21,9 +21,9 @@
       </v-card>
     </v-dialog>
     <v-row justify="center">
-      <v-col cols="8">
+      <v-col md="12" lg="8">
         <v-row>
-          <v-col cols="6" class="pb-0">
+          <v-col cols="12" md="6" class="pb-0">
             <v-row>
               <v-col cols="12" class="pb-0">
                 <v-text-field v-model="pet.name" outlined label="name">

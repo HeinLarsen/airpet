@@ -9,7 +9,7 @@
       <v-row justify="center">
         <v-col cols="12" lg="6">
           <v-row justify="center">
-            <v-col sm="6" xs="12">
+            <v-col cols="12" sm="6">
               <v-text-field
                 outlined
                 required
@@ -19,7 +19,7 @@
                 :rules="emailRules"
               />
             </v-col>
-            <v-col sm="6" xs="12">
+            <v-col cols="12" sm="6">
               <v-text-field
                 outlined
                 required
@@ -29,7 +29,7 @@
                 :rules="[(v) => !!v || 'Password is required']"
               />
             </v-col>
-            <v-col sm="6" xs="12">
+            <v-col cols="12" sm="6">
               <v-text-field
                 outlined
                 required
@@ -38,7 +38,7 @@
                 :rules="[(v) => !!v || 'First name is required']"
               />
             </v-col>
-            <v-col sm="6" xs="12">
+            <v-col cols="12" sm="6">
               <v-text-field
                 outlined
                 required
@@ -47,7 +47,7 @@
                 :rules="[(v) => !!v || 'Last name is required']"
               />
             </v-col>
-            <v-col sm="6" xs="12">
+            <v-col cols="12" sm="6">
               <v-text-field
                 outlined
                 required
@@ -56,7 +56,7 @@
                 :rules="[(v) => !!v || 'Street name is required']"
               />
             </v-col>
-            <v-col sm="6" xs="12">
+            <v-col cols="12" sm="6">
               <v-text-field
                 outlined
                 required
@@ -66,7 +66,7 @@
                 :rules="[(v) => !!v || 'Street number is required']"
               />
             </v-col>
-            <v-col sm="6" xs="12">
+            <v-col cols="12" sm="6">
               <v-text-field
                 outlined
                 required
@@ -75,7 +75,7 @@
                 :rules="[(v) => !!v || 'City is required']"
               />
             </v-col>
-            <v-col sm="6" xs="12">
+            <v-col cols="12" sm="6">
               <v-text-field
                 outlined
                 required
