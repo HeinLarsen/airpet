@@ -61,7 +61,7 @@ public class ReviewController {
     }
 //VIRKER
     @PostMapping(path = "/addReview")
-    public String addReview(@RequestBody Review review){
+    public ResponseEntity<String> addReview(@RequestBody Review review){
         String query = "insert into reviews (reviewer, pet, description, rating, date) values (" + review.getReviewer() + ", " + review.getPet() + ", '" + review.getDescription() + "'," + review.getRating() + ", '" + review.getDate() + "')";
 
         try {
@@ -71,7 +71,7 @@ public class ReviewController {
             e.printStackTrace();
         }
 
-        return "adding review";
+        return new ResponseEntity<>("adding review", HttpStatus.OK);
     }
 //VIRKER
     @GetMapping(path = "/getReviews/{id}")

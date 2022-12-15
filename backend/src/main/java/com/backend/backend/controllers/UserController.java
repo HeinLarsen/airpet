@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/updateUserName")
-    public @ResponseBody String updateUserName(@RequestParam String username, int ID) {
+    public ResponseEntity<String>  updateUserName(@RequestParam String username, int ID) {
         String query = "UPDATE users SET first_name =" + username + "WHERE ID=" + ID;
 
         try {
@@ -91,7 +91,7 @@ public class UserController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "trying to update username";
+        return new ResponseEntity<>("trying to update username", HttpStatus.OK);
     }
 
 
