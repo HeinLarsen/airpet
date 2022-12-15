@@ -47,7 +47,7 @@ public class UserController {
 
     //VIRKER
     @PostMapping(path = "/addUser")
-    public @ResponseBody String addNewUser(@RequestBody Users u) throws SQLException {
+    public ResponseEntity<String> addNewUser(@RequestBody Users u) throws SQLException {
         String query = "SELECT email FROM users";
         Statement statement = this.connection.createStatement();
         statement.execute(query);
@@ -55,13 +55,13 @@ public class UserController {
         while (resultSet.next()) {
             String email = resultSet.getString("email");
             if (u.getEmail().equals(email)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
+                return new ResponseEntity<>("Email already exists", HttpStatus.OK);
             }
         }
         query = "INSERT INTO users(email, first_name, last_name, password, street, street_number, city, zip) VALUES ('" + u.getEmail() + "', '" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getPassword() + "', '" + u.getStreet() + "', " + u.getStreetNumber() + ", '" + u.getCity() + "', " + u.getZip() + ")";
         statement = this.connection.createStatement();
-        statement.execute(query);
-        return "bing bom bam done";
+        statement.executeUpdate(query);
+        return new ResponseEntity<>("You have been signed up", HttpStatus.OK);
     }
 
 

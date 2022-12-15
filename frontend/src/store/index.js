@@ -114,7 +114,9 @@ export default new Vuex.Store({
         data: data
       }
       try {
-        await axios(options)
+        var res = await axios(options)
+        console.log(res.data);
+        return res.data
       } catch (error) {
         console.log(error);
       }
