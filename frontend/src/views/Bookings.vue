@@ -27,7 +27,7 @@
                   size="125"
                   tile
                 >
-                  <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
+                  <v-img :src="'http://localhost:8080/downloadFile/' + b.pet"></v-img>
                 </v-avatar>
               </div>
               <v-card-actions>
