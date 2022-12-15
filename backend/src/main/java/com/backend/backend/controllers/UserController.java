@@ -56,7 +56,7 @@ public class UserController {
         while (resultSet.next()) {
             String email = resultSet.getString("email");
             if (u.getEmail().equals(email)) {
-                return new ResponseEntity<>("Email already exists", HttpStatus.OK);
+                return new ResponseEntity<>("Email already exists", HttpStatus.IM_USED);
             }
         }
         query = "INSERT INTO users(email, first_name, last_name, password, street, street_number, city, zip) VALUES ('" + u.getEmail() + "', '" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getPassword() + "', '" + u.getStreet() + "', " + u.getStreetNumber() + ", '" + u.getCity() + "', " + u.getZip() + ")";

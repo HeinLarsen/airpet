@@ -1,7 +1,12 @@
 <template>
   <v-container fill-height fluid>
-    <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="validate">
-    <v-row justify="center">
+    <v-form
+      ref="form"
+      v-model="valid"
+      lazy-validation
+      @submit.prevent="validate"
+    >
+      <v-row justify="center">
         <v-col cols="12" lg="6">
           <v-row justify="center">
             <v-col sm="6" xs="12">
@@ -84,19 +89,15 @@
 
           <v-row justify="center">
             <v-col cols="auto">
-              <v-btn
-                type="submit"
-                class="green--text text--accent-3"
-                outlined
-              >
+              <v-btn type="submit" class="green--text text--accent-3" outlined>
                 signup
               </v-btn>
             </v-col>
           </v-row>
         </v-col>
-    </v-row>
-  </v-form>
-</v-container>
+      </v-row>
+    </v-form>
+  </v-container>
 </template>
 
 <script>
@@ -126,8 +127,24 @@ export default {
         this.signup();
       }
     },
-    signup() {
-      this.$store.dispatch("addUser", this.user);
+    async signup() {
+      var res = await this.$store.dispatch("addUser", this.user);
+      if (res.status == 200) {
+        this.$root.vtoast.show({
+          message: res.data,
+          color: "green",
+          icon: "mdi-check",
+          timer: 3000,
+        });
+        this.$router.push("/login");
+      } else {
+        this.$root.vtoast.show({
+          message: res.data,
+          color: "error",
+          icon: "mdi-alert",
+          timer: 3000,
+        })
+      }
     },
   },
 };

@@ -42,16 +42,25 @@
       <router-view />
        </v-slide-y-transition>
     </v-main>
+    <vtoast ref="vtoast"/>
   </v-app>
 </template>
 
 <script>
+import vtoast from '@/components/vtoast.vue'
+
 export default {
   name: "App",
+  components:{
+        vtoast
+    },
   data: () => ({}),
   created() {
     this.$store.dispatch("loadUser");
   },
+  mounted() {
+      this.$root.vtoast = this.$refs.vtoast
+    },
   methods: {
     logout() {
       this.$store.dispatch("logout");

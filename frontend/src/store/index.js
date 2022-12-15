@@ -115,8 +115,8 @@ export default new Vuex.Store({
       }
       try {
         var res = await axios(options)
-        console.log(res.data);
-        return res.data
+        console.log(res);
+        return res
       } catch (error) {
         console.log(error);
       }
@@ -174,8 +174,9 @@ export default new Vuex.Store({
         data: data
       }
       try {
-        await axios(options)
+        var res = await axios(options)
         context.dispatch('getReviews', data.pet)
+        return res;
       } catch (error) {
         console.log(error);
       }

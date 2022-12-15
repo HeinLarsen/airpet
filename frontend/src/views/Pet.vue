@@ -241,16 +241,46 @@ export default {
     allowedDates(val) {
       return !this.blockedDates.includes(val);
     },
-    submitReview() {
-      this.$store.dispatch("createReview", this.review);
+    async submitReview() {
+      var res = await this.$store.dispatch("createReview", this.review);
+      if (res.status == 200) {
+        this.$root.vtoast.show({
+          message: res.data,
+          color: "green",
+          icon: "mdi-check",
+          timer: 3000,
+        });
+      } else {
+        this.$root.vtoast.show({
+          message: res.data,
+          color: "error",
+          icon: "mdi-alert",
+          timer: 3000,
+        })
+      }
     },
-    book() {
-      this.$store.dispatch("createBooking", {
+    async book() {
+     var res = await this.$store.dispatch("createBooking", {
         pet: this.$route.params.id,
         bookee: this.$store.state.user.id,
         start: this.date,
         end: this.date2,
       });
+      if (res.status == 200) {
+        this.$root.vtoast.show({
+          message: res.data,
+          color: "green",
+          icon: "mdi-check",
+          timer: 3000,
+        });
+      } else {
+        this.$root.vtoast.show({
+          message: res.data,
+          color: "error",
+          icon: "mdi-alert",
+          timer: 3000,
+        })
+      }
     },
   },
   computed: {
