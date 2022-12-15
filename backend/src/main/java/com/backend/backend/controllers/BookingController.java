@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.io.FileInputStream;
@@ -52,8 +53,23 @@ public class BookingController {
     }
 // tilføj funktionalitet så man ikke kan lave bookings der overlapper
     @PostMapping(path = "/addBooking")
-    public String addNewBooking(@RequestBody Bookings bo){
+    public String addNewBooking(@RequestBody Bookings bo) throws SQLException{
+        String getDates = "SELECT * FROM bookings";
+        System.out.println(getDates);
+        Statement statement2 = this.connection.createStatement();
+        statement2.execute(getDates);
+        ResultSet resultSet = statement2.getResultSet();
+        while(resultSet.next()){
+            String startDate = resultSet.getString("start");
+            String endDate = resultSet.getString("end");
+
+            if(bo.getStart().equals(startDate) && bo.getEnd().equals(endDate) || bo.getStart().equals(startDate) || bo.getEnd().equals(endDate)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A booking already exists for this date range");
+            }
+        }
+
         String query = "INSERT INTO bookings(pet, bookee, start, end) VALUES (" + bo.getPet() + ", '" + bo.getBookee() + "', '" + bo.getStart() + "', '" + bo.getEnd() + "')";
+
         try{
             Statement statement = this.connection.createStatement();
             statement.executeUpdate(query);
