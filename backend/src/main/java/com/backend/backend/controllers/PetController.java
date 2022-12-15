@@ -91,7 +91,7 @@ public class PetController {
                     return id;
                 }
                 else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
+                    throw new SQLException("Creating pet failed, no ID obtained.");
                 }
             }
 

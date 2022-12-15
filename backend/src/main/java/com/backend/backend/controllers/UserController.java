@@ -1,5 +1,6 @@
 package com.backend.backend.controllers;
 import com.backend.backend.models.*;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class UserController {
 
     //VIRKER
     @PostMapping(path = "/addUser")
-    public @ResponseBody String addNewUser(@RequestBody Users u) throws SQLException {
+    public ResponseEntity<String>  addNewUser(@RequestBody Users u) throws SQLException {
         String query = "SELECT email FROM users";
         Statement statement = this.connection.createStatement();
         statement.execute(query);
@@ -61,7 +62,7 @@ public class UserController {
         query = "INSERT INTO users(email, first_name, last_name, password, street, street_number, city, zip) VALUES ('" + u.getEmail() + "', '" + u.getFirstname() + "', '" + u.getLastName() + "', '" + u.getPassword() + "', '" + u.getStreet() + "', " + u.getStreetNumber() + ", '" + u.getCity() + "', " + u.getZip() + ")";
         statement = this.connection.createStatement();
         statement.execute(query);
-        return "bing bom bam done";
+        return new ResponseEntity<>("Your user has been created", HttpStatus.OK);
     }
 
 
@@ -213,7 +214,7 @@ public class UserController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Something went wrong, please try again", HttpStatus.BAD_REQUEST);
     }
 
 
