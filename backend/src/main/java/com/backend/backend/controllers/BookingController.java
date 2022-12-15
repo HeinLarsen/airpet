@@ -51,7 +51,7 @@ public class BookingController {
             e.printStackTrace();
         }
     }
-// tilføj funktionalitet så man ikke kan lave bookings der overlapper
+// tilføj funktionalitet så man ikke kan lave bookings der overlapper -> tjek
     @PostMapping(path = "/addBooking")
     public String addNewBooking(@RequestBody Bookings bo) throws SQLException{
         String getDates = "SELECT * FROM bookings";
@@ -78,7 +78,7 @@ public class BookingController {
         }
         return "Adding your booking now...";
     }
-
+    // -> tjek
     @DeleteMapping(path = "/cancelBooking/{ID}")
     public @ResponseBody String cancelBooking(@PathVariable("ID") int ID)
     {
