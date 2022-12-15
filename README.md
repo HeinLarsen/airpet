@@ -154,7 +154,7 @@ values
     ("Vader", 2, 7, 8, 12, "Dark like Darth Vader", 55.0720329284668, 10.585433006286621),
     ("Rihanna", 1, 6, 10, 8, "a real pop-dog", 56.14143371582031, 10.21992301940918),
     ("Britney", 1, 7, 11, 4, "quite exclusive dogbreed", 55.70567321777344, 12.553417205810547),
-    ("Bling", 2, 12, 12, 2, "Yes it is actually a cat breed", 55.886791017888484, 12.49889130439863);
+    ("Bling", 2, 12, 12, 2, "Yes it is actually a cat breed. She normally sleeps at day and totally gets crazy at the night. A princess, dont like dirt, want everywhere clean", 55.886791017888484, 12.49889130439863);
     
     
 insert ignore into bookings
